@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+import yaml
+
 
 @dataclass
 class Note: 
@@ -17,7 +19,7 @@ class song:
     """Class for keeping track of song"""
     notes: list[Note] 
     rhythm: int # in bpm
-    key: str 
+    key: str # example: AShMajor (A# Major)
     timeSignature: tuple
 
     def keyTransform (self):

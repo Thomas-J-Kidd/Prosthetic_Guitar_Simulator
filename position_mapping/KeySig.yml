@@ -1,0 +1,137 @@
+---
+CMajor: 
+  A: "A"
+  B: "B"
+  C: "C"
+  D: "D"
+  E: "E"
+  F: "F"
+  G: "G"
+---
+GMajor: 
+  A: "A"
+  B: "B"
+  C: "C"
+  D: "D"
+  E: "E"
+  F: "FSh"
+  G: "G"
+---
+DMajor: 
+  A: "A"
+  B: "B"
+  C: "CSh"
+  D: "D"
+  E: "E"
+  F: "FSh"
+  G: "G"
+---
+AMajor: 
+  A: "A"
+  B: "B" 
+  C: "CSh"
+  D: "D"
+  E: "E"
+  F: "FSh"
+  G: "GSh"
+---
+EMajor: 
+  A: "A"
+  B: "B"
+  C: "CSh"
+  D: "DSh"
+  E: "E"
+  F: "FSh"
+  G: "GSh"
+---
+BMajor: 
+  A: "ASh"
+  B: "B"
+  C: "CSh"
+  D: "DSh"
+  E: "E"
+  F: "FSh"
+  G: "GSh"
+---
+FShMajor: 
+  A: "ASh"
+  B: "B"
+  C: "CSh"
+  D: "DSh"
+  E: "ESh"
+  F: "FSh"
+  G: "GSh"
+---
+CShMajor: 
+  A: "ASh"
+  B: "BSh"
+  C: "CSh"
+  D: "DSh"
+  E: "ESh"
+  F: "FSh"
+  G: "GSh"
+---
+FMajor:  
+  A: "A"
+  B: "BFl"
+  C: "C"
+  D: "D"
+  E: "E"
+  F: "F"
+  G: "G"
+---
+BFlMajor: 
+  A: "A"
+  B: "BFl"
+  C: "C" 
+  D: "D"
+  E: "EFl"
+  F: "F"
+  G: "G"
+---
+EFlMajor:
+  A: "AFl"
+  B: "BFl" 
+  C: "C" 
+  D: "D"
+  E: "EFl"
+  F: "F"
+  G: "G"
+---
+AFlMajor:
+  A: "AFl"
+  B: "BFl"
+  C: "C"
+  D: "DFl"
+  E: "EFl"
+  F: "F"
+  G: "G"
+---
+DFlMajor:
+  A: "AFl"
+  B: "BFl" 
+  C: "C"
+  D: "DFl"
+  E: "EFl"
+  F: "F"
+  G: "GFl"
+---
+GFlMajor:
+  A: "AFl" 
+  B: "BFl"
+  C: "CFl"
+  D: "DFl"
+  E: "EFl"
+  F: "F"
+  G: "GFl"
+---
+CFlMajor:
+  A: "AFl"
+  B: "BFl"
+  C: "CFl"
+  D: "DFl"
+  E: "EFl"
+  F: "FFl"
+  G: "GFl"
+
+
