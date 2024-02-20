@@ -1,0 +1,35 @@
+---
+CMajor: 
+  notes: ["A", "B", "C", "D", "E", "F", "G"]
+GMajor: 
+  notes: ["A", "B", "C", "D", "E", "FSh", "G"]
+DMajor: 
+  notes: ["A", "B", "CSh", "D", "E", "FSh", "G"]
+AMajor: 
+  notes: ["A", "B", "CSh", "D", "E", "FSh", "GSh"]
+EMajor: 
+  notes: ["A", "B", "CSh", "DSh", "E", "FSh", "GSh"]
+BMajor: 
+  notes: ["ASh", "B", "CSh", "DSh", "E", "FSh", "GSh"]
+FShMajor: 
+  notes: ["ASh", "B", "CSh", "DSh", "ESh", "FSh", "GSh"]
+CShMajor: 
+  notes: ["ASh", "BSh", "CSh", "DSh", "ESh", "FSh", "GSh"]
+FMajor:  
+  notes: ["A", "BFl", "C", "D", "E", "F", "G"]
+BFlMajor: 
+  notes: ["A", "BFl", "C", "D", "EFl", "F", "G"]
+EFlMajor:
+  notes: ["AFl", "BFl", "C", "D", "EFl", "F", "G"]
+AFlMajor:
+  notes: ["AFl", "BFl", "C", "DFl", "EFl", "F", "G"]
+DFlMajor:
+  notes: ["AFl", "BFl", "C", "DFl", "EFl", "F", "GFl"]
+GFlMajor:
+  notes: ["AFl", "BFl", "CFl", "DFl", "EFl", "F", "GFl"]
+CFlMajor:
+  notes: ["AFl", "BFl", "CFl", "DFl", "EFl", "FFl", "GFl"]
+
+
+
+
