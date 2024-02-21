@@ -30,7 +30,7 @@ class Note:
 
     def findPosition(self):
         """Function to return physical guitar position"""
-        
+         
         return [self.guitarString,self.guitarFret]
     
 
