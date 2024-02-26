@@ -4,8 +4,11 @@ import yaml
 with open('KeySig.yml', 'r') as file: 
     keySig_file = yaml.safe_load_all(file)
 
-with open('PositionData.yml', 'r') as file:
-    position_file = yaml.safe_load_all(file)
+with open('PosDataPhys.yml', 'r') as file:
+    posPhys_file = yaml.safe_load_all(file)
+
+with open('PosDataStrFrt.yml', 'r') as file:
+    posStrFrt_file = yaml.safe_load_all(file)
 
 @dataclass
 class Note: 
@@ -16,22 +19,24 @@ class Note:
     #guitarString: int
     #guitarFret: int
 
-    def __init__ (self, name: str, noteNumber: int, guitarString: int, guitarFret: int, noteLengthBeats: float): 
+    def __init__ (self, name: str, noteAccidental: int, noteNumber: int, noteLengthBeats: float): 
         """initializer function"""
         self.name = name
-        self.guitarString = guitarString
-        self.guitarFret = guitarFret
+        self.noteNumber = noteNumber
+        self.noteAccidental = noteAccidental
+        self.noteNumber = noteNumber
         self.noteLengthBeats = noteLengthBeats
 
-    def findLength(self, rhythm: int): 
+
+    def findLen(self, rhythm: int): 
         """Function to calculate noteLengthTime in seconds"""
         self.noteLengthTime = self.noteLengthBeats*(1/rhythm)*60.0
 
-
-    def findPosition(self):
-        """Function to return physical guitar position"""
-         
-        return [self.guitarString,self.guitarFret]
+    def findPos(self): 
+        """Function to find the position String, Fret, and Physical Position"""
+        [self.guitarString, self.guitarFret] = posStrFrt_file[self.name: self.noteNumber]
+        self.guitarFret = self.guitarFret + self.noteAccidental
+        [self.posX, self.posY] = posPhys_file[self.guitarString: self.guitarFret]
     
 
 @dataclass
@@ -54,12 +59,7 @@ class song:
     def keyTransform (self):
         """Function to transform notes to actual notes based on key"""
         newKeySig = keySig_file[self.keySig]
-        for oldNote, newNote in newKeySig: 
-            if(oldNote == newNote): 
-                continue
-            else: 
-                for note in self.notes:
-                    if oldNote in note: 
-                        note.guitarFret = note.guitarFret + 1            
+        for note in self.notes:
+            newAccidental = newKeySig[self.note.name] 
+            self.notes[note.noteAccidental] =self.notes[note.noteAccidental] + newAccidental
             # perform some kind of transform on note
-        return None

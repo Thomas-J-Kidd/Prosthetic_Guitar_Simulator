@@ -1,137 +1,137 @@
 ---
 CMajor: 
-  A: "A"
-  B: "B"
-  C: "C"
-  D: "D"
-  E: "E"
-  F: "F"
-  G: "G"
+  A: 0
+  B: 0
+  C: 0
+  D: 0
+  E: 0
+  F: 0
+  G: 0
 ---
 GMajor: 
-  A: "A"
-  B: "B"
-  C: "C"
-  D: "D"
-  E: "E"
-  F: "FSh"
-  G: "G"
+  A: 0
+  B: 0
+  C: 0
+  D: 0
+  E: 0
+  F: 1
+  G: 0
 ---
 DMajor: 
-  A: "A"
-  B: "B"
-  C: "CSh"
-  D: "D"
-  E: "E"
-  F: "FSh"
-  G: "G"
+  A: 0
+  B: 0
+  C: 1
+  D: 0
+  E: 0
+  F: 1
+  G: 0
 ---
 AMajor: 
-  A: "A"
-  B: "B" 
-  C: "CSh"
-  D: "D"
-  E: "E"
-  F: "FSh"
-  G: "GSh"
+  A: 0
+  B: 0 
+  C: 1
+  D: 0
+  E: 0
+  F: 1
+  G: 1
 ---
 EMajor: 
-  A: "A"
-  B: "B"
-  C: "CSh"
-  D: "DSh"
-  E: "E"
-  F: "FSh"
-  G: "GSh"
+  A: 0
+  B: 0
+  C: 1
+  D: 1
+  E: 0
+  F: 1
+  G: 1
 ---
 BMajor: 
-  A: "ASh"
-  B: "B"
-  C: "CSh"
-  D: "DSh"
-  E: "E"
-  F: "FSh"
-  G: "GSh"
+  A: 1
+  B: 0
+  C: 1
+  D: 1
+  E: 0
+  F: 1
+  G: 1
 ---
 FShMajor: 
-  A: "ASh"
-  B: "B"
-  C: "CSh"
-  D: "DSh"
-  E: "ESh"
-  F: "FSh"
-  G: "GSh"
+  A: 1
+  B: 0
+  C: 1
+  D: 1
+  E: 1
+  F: 1
+  G: 1
 ---
 CShMajor: 
-  A: "ASh"
-  B: "BSh"
-  C: "CSh"
-  D: "DSh"
-  E: "ESh"
-  F: "FSh"
-  G: "GSh"
+  A: 1
+  B: 1
+  C: 1
+  D: 1
+  E: 1
+  F: 1
+  G: 1
 ---
 FMajor:  
-  A: "A"
-  B: "BFl"
-  C: "C"
-  D: "D"
-  E: "E"
-  F: "F"
-  G: "G"
+  A: 0
+  B: -1
+  C: 0
+  D: 0
+  E: 0
+  F: 0
+  G: 0
 ---
 BFlMajor: 
-  A: "A"
-  B: "BFl"
-  C: "C" 
-  D: "D"
-  E: "EFl"
-  F: "F"
-  G: "G"
+  A: 0
+  B: -1
+  C: 0 
+  D: 0
+  E: -1
+  F: 0
+  G: 0
 ---
 EFlMajor:
-  A: "AFl"
-  B: "BFl" 
-  C: "C" 
-  D: "D"
-  E: "EFl"
-  F: "F"
-  G: "G"
+  A: -1
+  B: -1 
+  C: 0 
+  D: 0
+  E: -1
+  F: 0
+  G: 0
 ---
 AFlMajor:
-  A: "AFl"
-  B: "BFl"
-  C: "C"
-  D: "DFl"
-  E: "EFl"
-  F: "F"
-  G: "G"
+  A: -1
+  B: -1
+  C: 0
+  D: -1
+  E: -1
+  F: 0
+  G: 0
 ---
 DFlMajor:
-  A: "AFl"
-  B: "BFl" 
-  C: "C"
-  D: "DFl"
-  E: "EFl"
-  F: "F"
-  G: "GFl"
+  A: -1
+  B: -1 
+  C: 0
+  D: -1
+  E: -1
+  F: 0
+  G: -1
 ---
 GFlMajor:
-  A: "AFl" 
-  B: "BFl"
-  C: "CFl"
-  D: "DFl"
-  E: "EFl"
-  F: "F"
-  G: "GFl"
+  A: -1 
+  B: -1
+  C: -1
+  D: -1
+  E: -1
+  F: 0
+  G: -1
 ---
 CFlMajor:
-  A: "AFl"
-  B: "BFl"
-  C: "CFl"
-  D: "DFl"
-  E: "EFl"
-  F: "FFl"
-  G: "GFl"
+  A: -1
+  B: -1
+  C: -1
+  D: -1
+  E: -1
+  F: -1
+  G: -1
 
 

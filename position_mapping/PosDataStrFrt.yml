@@ -1,6 +1,6 @@
 LowEString: 
   E: # Each note on the string is represented
-    - 2: [6, 0] # first number denotes which number of E it is. currently noted in terms of [string, fret]. Guitar needs to be measured to give x,y coordinates. 
+    - 2: [6, 0] # first number denotes which number of E it is. currently noted in terms of [string, fret].
     - 3: [6, 12] 
   F:
     - 2: [6, 1]
