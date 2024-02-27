@@ -1,20 +1,63 @@
-twinkle:
+note_test: # tests position output for each letter note
   fifths: 0
   beats: 4
   beat-type: 4
   notes: 
-    G:
-      octave: 4
+    E: 
+      octave: 3
       duration: 4
-key_change_test: 
+    F: 
+      octave: 3
+      duration: 4
+    G:
+      octave: 3
+      duration: 4
+    A: 
+      octave: 3
+      duration: 4
+    B: 
+      octave: 3
+      duration: 4
+    C: 
+      octave: 3
+      duration: 4
+    D: 
+      octave: 3
+      duration: 4
+
+key_test1: 
   fifths: 1
   beats: 4
   beat-type: 4
   notes: 
     A: 
       octave: 2
-      duration: 4
     F:
       octave: 3
-      duration: 4
-       
+
+key_test2: 
+  fifths: 3
+  beats: 4
+  beat-type: 4
+  notes: 
+    A: 
+      octave: 2
+      accidental: 1
+    B:
+      octave: 3
+      accidental: 1
+    C: 
+      octave: 3
+      accidental: 1
+    D: 
+      octave: 3
+      accidental: 1
+    E: 
+      octave: 3
+      accidental: -1
+    F: 
+      octave: 3
+      accidental: -1
+    G: 
+      octave: 3
+      accidental: -1

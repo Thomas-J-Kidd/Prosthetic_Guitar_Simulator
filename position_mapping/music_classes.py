@@ -19,11 +19,9 @@ class Note:
         self.name = name
         self.noteNumber = noteNumber
         self.noteAccidental = noteAccidental
-        self.noteNumber = noteNumber
         self.noteLengthBeats = noteLengthBeats
 
-        self.findPos()
-
+        
 
     def findLen(self, rhythm: int): 
         """Function to calculate noteLengthTime in seconds"""
@@ -32,7 +30,11 @@ class Note:
     def findPos(self): 
         """Function to find the position String, Fret, and Physical Position"""
         self.guitarString, self.guitarFret = posStrFrt_file[self.name][self.noteNumber]
+        print('Note name: ', self.name)
+        print('Original Guitar Fret: ', self.guitarFret)
+        print('Note Accidental: ', self.noteAccidental)
         self.guitarFret = self.guitarFret + self.noteAccidental
+        print('New Fret: ', self.guitarFret, '\n')
         self.posX, self.posY = posPhys_file['String'][self.guitarString]['Fret'][self.guitarFret]
     
 
@@ -63,4 +65,5 @@ class Song:
             for note in self.notes:
                 newAccidental = newKeySig[note.name]
                 note.noteAccidental = note.noteAccidental + newAccidental
+                note.findPos()
                 # perform some kind of transform on note
