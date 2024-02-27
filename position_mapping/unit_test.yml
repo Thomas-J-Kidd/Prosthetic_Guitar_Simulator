@@ -1,0 +1,9 @@
+twinkle:
+  fifths: 0
+  beats: 4
+  beat-type: 4
+  notes: 
+    G:
+      octave: 4
+      duration: 4
+       

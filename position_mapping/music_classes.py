@@ -1,14 +1,15 @@
 from dataclasses import dataclass
 import yaml
 
-with open('KeySig.yml', 'r') as file: 
-    keySig_file = yaml.safe_load_all(file)
+with open('KeySig.yaml', 'r') as file: 
+    keySig_file = yaml.safe_load(file)
+
 
 with open('PosDataPhys.yml', 'r') as file:
-    posPhys_file = yaml.safe_load_all(file)
+    posPhys_file = yaml.safe_load(file)
 
 with open('PosDataStrFrt.yml', 'r') as file:
-    posStrFrt_file = yaml.safe_load_all(file)
+    posStrFrt_file = yaml.safe_load(file)
 
 @dataclass
 class Note: 
@@ -27,6 +28,8 @@ class Note:
         self.noteNumber = noteNumber
         self.noteLengthBeats = noteLengthBeats
 
+        self.findPos()
+
 
     def findLen(self, rhythm: int): 
         """Function to calculate noteLengthTime in seconds"""
@@ -34,13 +37,13 @@ class Note:
 
     def findPos(self): 
         """Function to find the position String, Fret, and Physical Position"""
-        [self.guitarString, self.guitarFret] = posStrFrt_file[self.name: self.noteNumber]
+        [self.guitarString, self.guitarFret] = posStrFrt_file[self.name][self.noteNumber]
         self.guitarFret = self.guitarFret + self.noteAccidental
-        [self.posX, self.posY] = posPhys_file[self.guitarString: self.guitarFret]
+        [self.posX, self.posY] = posPhys_file[self.guitarString][self.guitarFret]
     
 
 @dataclass
-class song:
+class Song:
     """Class for keeping track of song"""
     notes: list[Note] 
     rhythm: int # in bpm
@@ -53,13 +56,16 @@ class song:
         self.keySig = keySig
         self.timeSig = timeSig
 
-        self.keyTransform()
-
+        # self.keyTransform()
+        if notes is not None: 
+            for note in notes:
+                self.notes[note.findLen(self.rhythm)]
+        
 
     def keyTransform (self):
         """Function to transform notes to actual notes based on key"""
         newKeySig = keySig_file[self.keySig]
         for note in self.notes:
-            newAccidental = newKeySig[self.note.name] 
+            newAccidental = newKeySig[self.notes[note.name]] 
             self.notes[note.noteAccidental] =self.notes[note.noteAccidental] + newAccidental
             # perform some kind of transform on note

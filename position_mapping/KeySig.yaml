@@ -1,5 +1,4 @@
----
-CMajor: 
+0: # C Major
   A: 0
   B: 0
   C: 0
@@ -7,8 +6,7 @@ CMajor:
   E: 0
   F: 0
   G: 0
----
-GMajor: 
+1: # G Major
   A: 0
   B: 0
   C: 0
@@ -16,8 +14,7 @@ GMajor:
   E: 0
   F: 1
   G: 0
----
-DMajor: 
+2: # D Major 
   A: 0
   B: 0
   C: 1
@@ -25,8 +22,7 @@ DMajor:
   E: 0
   F: 1
   G: 0
----
-AMajor: 
+3: # AMajor
   A: 0
   B: 0 
   C: 1
@@ -34,8 +30,7 @@ AMajor:
   E: 0
   F: 1
   G: 1
----
-EMajor: 
+4: # E Major
   A: 0
   B: 0
   C: 1
@@ -43,8 +38,7 @@ EMajor:
   E: 0
   F: 1
   G: 1
----
-BMajor: 
+5: # B Major
   A: 1
   B: 0
   C: 1
@@ -52,8 +46,7 @@ BMajor:
   E: 0
   F: 1
   G: 1
----
-FShMajor: 
+6: # F Sharp Major
   A: 1
   B: 0
   C: 1
@@ -61,8 +54,7 @@ FShMajor:
   E: 1
   F: 1
   G: 1
----
-CShMajor: 
+7: # C Sharp Major 
   A: 1
   B: 1
   C: 1
@@ -70,8 +62,7 @@ CShMajor:
   E: 1
   F: 1
   G: 1
----
-FMajor:  
+-1: # F Major 
   A: 0
   B: -1
   C: 0
@@ -79,8 +70,7 @@ FMajor:
   E: 0
   F: 0
   G: 0
----
-BFlMajor: 
+-2: # B Flat Major
   A: 0
   B: -1
   C: 0 
@@ -88,8 +78,7 @@ BFlMajor:
   E: -1
   F: 0
   G: 0
----
-EFlMajor:
+-3: # E Flat Major
   A: -1
   B: -1 
   C: 0 
@@ -97,8 +86,7 @@ EFlMajor:
   E: -1
   F: 0
   G: 0
----
-AFlMajor:
+-4: # A Flat Major
   A: -1
   B: -1
   C: 0
@@ -106,8 +94,7 @@ AFlMajor:
   E: -1
   F: 0
   G: 0
----
-DFlMajor:
+-5: # D Flat Major
   A: -1
   B: -1 
   C: 0
@@ -115,8 +102,7 @@ DFlMajor:
   E: -1
   F: 0
   G: -1
----
-GFlMajor:
+-6: # G Flat Major
   A: -1 
   B: -1
   C: -1
@@ -124,8 +110,7 @@ GFlMajor:
   E: -1
   F: 0
   G: -1
----
-CFlMajor:
+-7: # C Flat Major
   A: -1
   B: -1
   C: -1
@@ -133,5 +118,3 @@ CFlMajor:
   E: -1
   F: -1
   G: -1
-
-
