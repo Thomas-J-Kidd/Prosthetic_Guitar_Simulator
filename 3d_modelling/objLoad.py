@@ -11,5 +11,6 @@ def load_obj(filename):
     return vertices
 
 
-vertices = load_obj('FINALMODEL.OBJ')
+vertices = load_obj('FINALMODEL.obj')
 vertices_np = np.array(vertices)
+print(vertices_np)

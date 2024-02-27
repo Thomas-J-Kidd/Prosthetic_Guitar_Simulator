@@ -6,4 +6,15 @@ twinkle:
     G:
       octave: 4
       duration: 4
+key_change_test: 
+  fifths: 1
+  beats: 4
+  beat-type: 4
+  notes: 
+    A: 
+      octave: 2
+      duration: 4
+    F:
+      octave: 3
+      duration: 4
        
