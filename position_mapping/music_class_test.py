@@ -5,9 +5,8 @@ import yaml
 with open('unit_test.yml', 'r') as file:
     testfile = yaml.safe_load(file)
 
-# import music file as something, parse into helpful objects
-    
 
+# unpack data from testing file
 for i in range(len(testfile)):
     notes = []
     timeSig = testfile[i]['beat-type']/testfile[i]['beats']
