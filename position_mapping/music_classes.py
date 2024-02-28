@@ -72,9 +72,12 @@ class Song:
 
         if self.notes is not None: # Check if note exists
             for note in self.notes:
-                newAccidental = newKeySig[note.name] # get new accidental from key signature file
-                note.noteAccidental = note.noteAccidental + newAccidental # add key signature change to note
-                note.findPos() # find new finger position 
+                # get new accidental from key signature file
+                newAccidental = newKeySig[note.name] 
+                # add key signature change to note
+                note.noteAccidental = note.noteAccidental + newAccidental
+                # find new finger position 
+                note.findPos() 
 
 
     def printAttribs(self): 
