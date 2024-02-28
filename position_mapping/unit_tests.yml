@@ -4,19 +4,51 @@
   beat-type: 4
   notes: 
     - name: 'E' 
+      octave: 2
+      duration: 4
+      accidental: 0 
+    - name: 'E' 
       octave: 3
+      duration: 4
+      accidental: 0 
+    - name: 'E' 
+      octave: 4
+      duration: 4
+      accidental: 0 
+    - name: 'F' 
+      octave: 2
       duration: 4
       accidental: 0 
     - name: 'F' 
       octave: 3
       duration: 4
       accidental: 0 
+    - name: 'F' 
+      octave: 4
+      duration: 4
+      accidental: 0 
+    - name: 'G'
+      octave: 2
+      duration: 4
+      accidental: 0
     - name: 'G'
       octave: 3
       duration: 4
       accidental: 0
+    - name: 'G'
+      octave: 4
+      duration: 4
+      accidental: 0
+    - name: 'A' 
+      octave: 2
+      duration: 4
+      accidental: 0
     - name: 'A' 
       octave: 3
+      duration: 4
+      accidental: 0
+    - name: 'B' 
+      octave: 2
       duration: 4
       accidental: 0
     - name: 'B' 
@@ -27,10 +59,19 @@
       octave: 3
       duration: 4
       accidental: 0
+    - name: 'C'
+      octave: 4
+      duration: 4
+      accidental: 0
     - name: 'D' 
       octave: 3
       duration: 4
       accidental: 0
+    - name: 'D' 
+      octave: 
+      duration: 4
+      accidental: 0
+
 
 - 2:
   fifths: 1
@@ -56,26 +97,26 @@
       duration: 4
       accidental: 1
     - name: 'B'
-      octave: 3
+      octave: 2
       duration: 4
       accidental: 1
     - name: 'C' 
-      octave: 3
+      octave: 2
       duration: 4
       accidental: 1
     - name: 'D' 
-      octave: 3
+      octave: 2
       duration: 4
       accidental: 1
     - name: 'E' 
-      octave: 3
+      octave: 2
       duration: 4
       accidental: -1
     - name: 'F' 
-      octave: 3
+      octave: 2
       duration: 4
       accidental: -1
     - name: 'G' 
-      octave: 3
+      octave: 2
       duration: 4
       accidental: -1

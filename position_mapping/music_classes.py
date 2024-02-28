@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import yaml
 
-with open('KeySig.yaml', 'r') as file: 
+with open('KeySig.yml', 'r') as file: 
     keySig_file = yaml.safe_load(file)
 
 with open('PosDataPhys.yml', 'r') as file:
@@ -30,11 +30,7 @@ class Note:
     def findPos(self): 
         """Function to find the position String, Fret, and Physical Position"""
         self.guitarString, self.guitarFret = posStrFrt_file[self.name][self.noteNumber]
-        print('Note name: ', self.name)
-        print('Original Guitar Fret: ', self.guitarFret)
-        print('Note Accidental: ', self.noteAccidental)
         self.guitarFret = self.guitarFret + self.noteAccidental
-        print('New Fret: ', self.guitarFret, '\n')
         self.posX, self.posY = posPhys_file['String'][self.guitarString]['Fret'][self.guitarFret]
     
 

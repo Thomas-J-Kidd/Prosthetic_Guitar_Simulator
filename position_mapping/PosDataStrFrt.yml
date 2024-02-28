@@ -1,5 +1,6 @@
   E: # Each note on the string is represented
-    2: [6, 0] # first number denotes which number of E it is. currently noted in terms of [string, fret].
+  # first number denotes which number(octave) of E it is. 
+    2: [6, 0] # Octave: [String, Fret]
     3: [4, 2]
     4: [1, 0]
   F:
