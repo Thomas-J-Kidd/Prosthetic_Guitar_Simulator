@@ -69,12 +69,13 @@ class Song:
     def keyTransform (self):
         """Function to transform notes to actual notes based on key"""
         newKeySig = keySig_file[self.keySig]
-        if self.notes is not None:
+
+        if self.notes is not None: # Check if note exists
             for note in self.notes:
-                newAccidental = newKeySig[note.name]
-                note.noteAccidental = note.noteAccidental + newAccidental
+                newAccidental = newKeySig[note.name] # get new accidental from key signature file
+                note.noteAccidental = note.noteAccidental + newAccidental # 
                 note.findPos()
-                # perform some kind of transform on note
+
 
     def printAttribs(self): 
         """Function to print attributes of song to console for testing and debugging"""
