@@ -1,39 +1,55 @@
 from music_classes import Note, Song
 import yaml
 
-# import test yaml file
-with open('unit_tests.yml', 'r') as file:
-    testfile = yaml.safe_load(file)
 
-def tester(testfile: dict, keySigTest: bool, accidentalTest: bool, rhythm: int) -> list[Song]:
+def tester(fileName: str, keySigTest: bool, accidentalTest: bool, rhythm: int) -> list[Song]:
+    # load in test data file
+    with open(fileName, 'r') as file:
+        testFile = yaml.safe_load(file)
     # initialize tests list
     tests = []
     # unpack data from testing file
-    for i in range(len(testfile)):
+    for i in range(len(testFile)):
         notes = []
-        timeSig = testfile[i]['beat-type']/testfile[i]['beats']
-        keySig = testfile[i]['fifths']
+        timeSig = (testFile[i]['beat-type'],testFile[i]['beats'])
+        keySig = testFile[i]['fifths']
 
-        for note in range(len(testfile[i]['notes'])):
-            name = testfile[i]['notes'][note]['name'] # collect note name
-            octave = testfile[i]['notes'][note]['octave'] # collect note octave
-            duration = testfile[i]['notes'][note]['duration'] # collect note duration in beats
-            accidental = testfile[i]['notes'][note]['accidental'] # collect sharps/flats
-            if accidentalTest == False:
-                newNote = Note(name, accidental, octave, duration)
-            else: 
+        for note in range(len(testFile[i]['notes'])):
+            name = testFile[i]['notes'][note]['name'] # collect note name
+            octave = testFile[i]['notes'][note]['octave'] # collect note octave
+            duration = testFile[i]['notes'][note]['duration'] # collect note duration in beats
+            accidental = testFile[i]['notes'][note]['accidental'] # collect sharps/flats
+            
+            if accidentalTest == True: 
                 for acc in range(-2,2):
                     newNote = Note(name, acc, octave, duration)
-            notes.append(newNote)
-            if keySigTest == False: 
-                tests.append(Song(notes, rhythm, keySig, timeSig))
+                    notes.append(newNote)
             else: 
-                for key in range(-7,7):
-                    tests.append(Song(notes, rhythm, key, timeSig))
-                    key += 1
+                newNote = Note(name, accidental, octave, duration)
+                notes.append(newNote)
+
+            
+        if keySigTest == True: 
+            for key in range(-7,7):
+                newSong = Song(notes, rhythm, key, timeSig)
+                # newSong.printAttribs()
+                tests.append(newSong)
+        else: 
+            newSong = Song(notes, rhythm, keySig, timeSig)
+            # newSong.printAttribs()
+            tests.append(newSong)
+        
+            
     return tests
 
-normalTest = tester(testfile, False, False, 60)
-accidentalTest = tester(testfile, False, True, 60)
-keySigTest = tester(testfile, True, False, 60)
+testFile = 'unit_tests.yml'
+normalTest = tester(testFile, False, False, 60)
+for test in normalTest: 
+    test.printAttribs()
+
+print("Accidentals test:  \n")
+accidentalTest = tester(testFile, False, True, 60)
+for test in accidentalTest: 
+    test.printAttribs()
+# keySigTest = tester(testFile, True, False, 60)
 

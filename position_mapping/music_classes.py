@@ -29,15 +29,33 @@ class Note:
 
     def findPos(self): 
         """Function to find the position String, Fret, and Physical Position"""
-        self.guitarString, self.guitarFret = posStrFrt_file[self.name][self.noteNumber]
-        self.guitarFret = self.guitarFret + self.noteAccidental
+        try:
+            self.guitarString, self.guitarFret = posStrFrt_file[self.name][self.noteNumber]
+        except KeyError: 
+            # print("Octave is not valid")
+            return None
+        else:
+            self.guitarString, self.guitarFret = posStrFrt_file[self.name][self.noteNumber]
+
+        if(self.guitarFret + self.noteAccidental) < 0:
+            self.guitarFret = 0
+        else: 
+            self.guitarFret = self.guitarFret + self.noteAccidental
         self.posX, self.posY = posPhys_file['String'][self.guitarString]['Fret'][self.guitarFret]
     
+    def printNoteAttribs(self): 
+        print('Name: ', self.name)
+        print('Octave: ', self.noteNumber)
+        print('Accidental: ', self.noteAccidental)
+        print('Duration: ', self.noteLengthBeats)
+        print('Time: ', self.noteLengthTime)
+        print('String: ', self.guitarString)
+        print('Fret: ', self.guitarFret)
 
 @dataclass
 class Song:
     """Class for keeping track of song"""
-    def __init__(self, notes: list[Note], rhythm: int, keySig: str, timeSig: tuple): 
+    def __init__(self, notes: list[Note], rhythm: int, keySig: int, timeSig: tuple): 
         self.notes = notes
         self.rhythm = rhythm
         self.keySig = keySig
@@ -47,7 +65,6 @@ class Song:
         if notes is not None: 
             for note in notes:
                 note.findLen(self.rhythm)
-        
 
     def keyTransform (self):
         """Function to transform notes to actual notes based on key"""
@@ -58,3 +75,15 @@ class Song:
                 note.noteAccidental = note.noteAccidental + newAccidental
                 note.findPos()
                 # perform some kind of transform on note
+
+    def printAttribs(self): 
+        """Function to print attributes of song to console for testing and debugging"""
+        print('Start of Song \n')
+        print('Rhythm: ', self.rhythm)
+        print('Key Signature: ', self.keySig)
+        print('Time Signature: ', self.timeSig, '\n')
+        if self.notes is not None:
+            for note in self.notes: 
+                note.printNoteAttribs()
+
+

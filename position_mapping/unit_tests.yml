@@ -68,11 +68,9 @@
       duration: 4
       accidental: 0
     - name: 'D' 
-      octave: 
+      octave: 4
       duration: 4
       accidental: 0
-
-
 - 2:
   fifths: 1
   beats: 4
@@ -86,37 +84,36 @@
       octave: 3
       duration: 4
       accidental: 0
-
 - 3:
   fifths: 3
   beats: 4
   beat-type: 4
   notes: 
     - name: 'A' 
-      octave: 2
+      octave: 3
       duration: 4
       accidental: 1
     - name: 'B'
-      octave: 2
+      octave: 3
       duration: 4
       accidental: 1
     - name: 'C' 
-      octave: 2
+      octave: 3
       duration: 4
       accidental: 1
     - name: 'D' 
-      octave: 2
+      octave: 3
       duration: 4
       accidental: 1
     - name: 'E' 
-      octave: 2
+      octave: 3
       duration: 4
       accidental: -1
     - name: 'F' 
-      octave: 2
+      octave: 3
       duration: 4
       accidental: -1
     - name: 'G' 
-      octave: 2
+      octave: 3
       duration: 4
       accidental: -1
