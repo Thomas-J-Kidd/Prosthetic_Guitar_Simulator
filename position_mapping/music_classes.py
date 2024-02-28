@@ -41,11 +41,6 @@ class Note:
 @dataclass
 class Song:
     """Class for keeping track of song"""
-    notes: list[Note] 
-    rhythm: int # in bpm
-    keySig: str # key signature example: AShMajor (A# Major)
-    timeSig: tuple # time signature example: [4,4]
-
     def __init__(self, notes: list[Note], rhythm: int, keySig: str, timeSig: tuple): 
         self.notes = notes
         self.rhythm = rhythm

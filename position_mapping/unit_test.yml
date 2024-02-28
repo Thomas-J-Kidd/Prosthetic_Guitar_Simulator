@@ -1,63 +1,81 @@
-note_test: # tests position output for each letter note
+- 1: # tests positionoutput for each letter note
   fifths: 0
   beats: 4
   beat-type: 4
   notes: 
-    E: 
+    - name: 'E' 
       octave: 3
       duration: 4
-    F: 
+      accidental: 0 
+    - name: 'F' 
       octave: 3
       duration: 4
-    G:
+      accidental: 0 
+    - name: 'G'
       octave: 3
       duration: 4
-    A: 
+      accidental: 0
+    - name: 'A' 
       octave: 3
       duration: 4
-    B: 
+      accidental: 0
+    - name: 'B' 
       octave: 3
       duration: 4
-    C: 
+      accidental: 0
+    - name: 'C'
       octave: 3
       duration: 4
-    D: 
+      accidental: 0
+    - name: 'D' 
       octave: 3
       duration: 4
+      accidental: 0
 
-key_test1: 
+- 2:
   fifths: 1
   beats: 4
   beat-type: 4
   notes: 
-    A: 
+    - name: 'A' 
       octave: 2
-    F:
+      duration: 4
+      accidental: 0
+    - name: 'F'
       octave: 3
+      duration: 4
+      accidental: 0
 
-key_test2: 
+- 3:
   fifths: 3
   beats: 4
   beat-type: 4
   notes: 
-    A: 
+    - name: 'A' 
       octave: 2
+      duration: 4
       accidental: 1
-    B:
+    - name: 'B'
       octave: 3
+      duration: 4
       accidental: 1
-    C: 
+    - name: 'C' 
       octave: 3
+      duration: 4
       accidental: 1
-    D: 
+    - name: 'D' 
       octave: 3
+      duration: 4
       accidental: 1
-    E: 
+    - name: 'E' 
       octave: 3
+      duration: 4
       accidental: -1
-    F: 
+    - name: 'F' 
       octave: 3
+      duration: 4
       accidental: -1
-    G: 
+    - name: 'G' 
       octave: 3
+      duration: 4
       accidental: -1
