@@ -1,6 +1,11 @@
 # Prosthetic_Guitar_Simulator
 Oklahoma State University Senior Design project
 
+## Clone the repo
+```
+git clone https://github.com/Thomas-J-Kidd/Prosthetic_Guitar_Simulator.git
+```
+
 ## Downloading the model
 Make sure that the model is present in in the `fretHand` folder
 
