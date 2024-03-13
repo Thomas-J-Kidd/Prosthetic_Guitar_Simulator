@@ -3,7 +3,7 @@ import torch
 import mano
 from mano.utils import Mesh, colors
 
-model_path = '/home/zappi/Projects/Prosthetic_Guitar_Simulator/3d_modelling/fretHand/mano_v1_2/models'
+model_path = '../mano_v1_2/models'
 n_comps = 45
 batch_size = 1
 
@@ -64,7 +64,7 @@ def render_guitar(obj_file_path, vc=colors['purple']):
     return mesh
 
 # Example usage:
-guitar_mesh = render_guitar("/home/zappi/Projects/Prosthetic_Guitar_Simulator/3d_modelling/FINALMODEL.obj")
+guitar_mesh = render_guitar("../../FINALMODEL.obj")
 # guitar_mesh.show()
 
 #visualize hand mesh only
