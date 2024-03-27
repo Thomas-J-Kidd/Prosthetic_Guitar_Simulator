@@ -1,10 +1,10 @@
 # process data from music parser here
 import xml.etree.ElementTree as ET
-import music_classes
+from music_classes import Note, Song
 
 tree = ET.parse('Twinkle')
 score = tree.getroot()
-
+songNotes = []
 songName = score.find('part-list').find('score-part').find('part-name').text
 
 for part in score.iter('part'): 
@@ -15,18 +15,24 @@ for part in score.iter('part'):
             beats = int(measure.find('attributes').find('time').find('beats').text)
             beatType = int(measure.find('attributes').find('time').find('beat-type').text)
             timeSig = [beats, beatType]
-            tempo = measure.find('sound').attrib['tempo']
+            tempo = float(measure.find('sound').attrib['tempo'])
             print(tempo)
         else:
             for note in measure:
                 if note.find('pitch') is not None:
                     name = note.find('pitch').find('step').text
-                    accidental = note.find('pitch').find('alter').text
-                    octave = note.find('pitch').find('octave').text
-                    duration = note.find('duration').text
+                    accidental = int(note.find('pitch').find('alter').text)
+                    octave = int(note.find('pitch').find('octave').text)
+                    duration = int(note.find('duration').text)
                 elif note.find('rest') is not None:
                     name = 'rest'
-                    duration = note.find('duration').text
+                    accidental = 0
+                    octave = 0
+                    duration = int(note.find('duration').text)
+                songNotes.append(Note(name, accidental, octave, duration))
+
+song = Song(songNotes, tempo, keySig, timeSig)
+song.printAttribs()
         
 
 
