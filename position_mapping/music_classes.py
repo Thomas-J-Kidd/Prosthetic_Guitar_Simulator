@@ -1,13 +1,16 @@
 from dataclasses import dataclass
 import yaml
 
-with open('KeySig.yml', 'r') as file: 
+with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/KeySig.yml', 'r') as file: 
     keySig_file = yaml.safe_load(file)
 
-with open('PosDataPhys.yml', 'r') as file:
+#with open('PosDataPhys.yml', 'r') as file:
+#    posPhys_file = yaml.safe_load(file)
+
+with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/model1Phys.yml', 'r') as file:
     posPhys_file = yaml.safe_load(file)
 
-with open('PosDataStrFrt.yml', 'r') as file:
+with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/PosDataStrFrt.yml', 'r') as file:
     posStrFrt_file = yaml.safe_load(file)
 
 @dataclass
@@ -22,6 +25,8 @@ class Note:
         self.noteLengthBeats = noteLengthBeats
         self.guitarString = 0
         self.guitarFret = 0
+        self.posX = 0
+        self.posY = 0
 
     def findLen(self, tempo: float): 
         """Function to calculate noteLengthTime in seconds"""
@@ -44,8 +49,9 @@ class Note:
             self.guitarFret = 0
         else: 
             self.guitarFret = self.guitarFret + self.noteAccidental
-        self.posX, self.posY = posPhys_file['String'][self.guitarString]['Fret'][self.guitarFret]
-    
+            self.posX, self.posY = posPhys_file['String'][self.guitarString]['Fret'][self.guitarFret]
+
+            
     def printNoteAttribs(self): 
         print('Name: ', self.name)
         print('Octave: ', self.noteNumber)

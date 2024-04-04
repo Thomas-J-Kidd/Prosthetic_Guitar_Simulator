@@ -1,6 +1,6 @@
 # process data from music parser here
 import xml.etree.ElementTree as ET
-from music_classes import Note, Song
+from position_mapping.music_classes import Note, Song
 
 def processMusic(fileName: str):
     tree = ET.parse(fileName)
@@ -33,7 +33,7 @@ def processMusic(fileName: str):
                     songNotes.append(Note(name, accidental, octave, duration))
 
     song = Song(songNotes, tempo, keySig, timeSig)
-    song.printAttribs()
+#   song.printAttribs()
     return song
             
 
