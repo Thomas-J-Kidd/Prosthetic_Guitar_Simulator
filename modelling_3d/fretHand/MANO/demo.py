@@ -1,79 +1,100 @@
-
 import torch
 import mano
 from mano.utils import Mesh, colors
+import glfw
+from OpenGL.GL import *
+import numpy as np
+from ursina import *
+from time import time
 
-model_path = '../mano_v1_2/models'
+model_path = Path('../mano_v1_2/models')
 n_comps = 45
 batch_size = 1
 
-rh_model = mano.load(model_path=model_path,
-                     is_rhand= False,
-                     num_pca_comps=n_comps,
-                     batch_size=batch_size,
-                     flat_hand_mean=False)
 
-# betas = torch.rand(batch_size, 10)*.1
-# pose = torch.rand(batch_size, n_comps)*1
-# global_orient = torch.rand(batch_size, 3)
-# transl        = torch.rand(batch_size, 3)
-test_var = 0.1
-test_var2 = -0.2
-test_var2a = -0.2
-test_var3 = -0.3
-test_var4 = -0.2
-test_var5 = -0.3
-test_var6 = 0.1
-betas = torch.tensor([[test_var, test_var, test_var, test_var, test_var, test_var, test_var, test_var, test_var, test_var]])
-# pose = torch.tensor([[   test_var2, test_var2, test_var2, test_var2, test_var2, test_var2, test_var2, test_var2, test_var2,
-#                          test_var3, test_var3, test_var3, test_var3, test_var3, test_var3, test_var3, test_var3, test_var3,
-#                          test_var4, test_var4, test_var4, test_var4, test_var4, test_var4, test_var4, test_var4, test_var4,
-#                          test_var5, test_var5, test_var5, test_var5, test_var5, test_var5, test_var5, test_var5, test_var5,
-#                          test_var6, test_var6, test_var6, test_var6, test_var6, test_var6, test_var6, test_var6, test_var6,]])
-#                         1st: left, right, forward/backward 2nd: twist, twist, forward/backward, 3rd:
-pose = torch.tensor([[   test_var2a, test_var2a, test_var2, test_var2a, test_var2a, test_var2, test_var2a, test_var2a, test_var2a,
-                         test_var3, test_var3, test_var3, test_var3, test_var3, test_var3, test_var3, test_var3, test_var3,
-                         test_var4, test_var4, test_var4, test_var4, test_var4, test_var4, test_var4, test_var4, test_var4,
-                         test_var5, test_var5, test_var5, test_var5, test_var5, test_var5, test_var5, test_var5, test_var5,
-                         test_var6, test_var6, test_var6, test_var6, test_var6, test_var6, test_var6, test_var6, test_var6,]])
-global_orient = torch.tensor([[0, 0, 0]])
-transl = torch.tensor([[0, 0, 0]])
-print(f"These are the variables being randomly generated:\nBetas: {betas}\nPose: {pose}\nGlobal Orient: {global_orient}\nTransl: {transl}")
+class CustomModel(Entity):
+    def __init__(self, model, vertices, faces, **kwargs):
+        super().__init__(**kwargs)
+        self.model = model
+        self.last_update_time = time()
+        self.update_interval = 0.5  # Update every 0.5 seconds
+        self.color = color.white
 
-output = rh_model(betas=betas,
-                  global_orient=global_orient,
-                  hand_pose=pose,
-                  transl=transl,
-                  return_verts=True,
-                  return_tips = True)
+    def update(self):
+        current_time = time()
+        if current_time - self.last_update_time > self.update_interval:
+            self.pose_index = (self.pose_index + 1) % len(self.poses)
+            new_vertices, new_faces = self.poses[self.pose_index]
+            self.model.vertices = new_vertices
+            self.model.triangles = new_faces
+            self.model.generate()
+            self.last_update_time = current_time
 
 
-h_meshes = rh_model.hand_meshes(output)
-j_meshes = rh_model.joint_meshes(output)
+    def set_poses(self, poses):
+        # Set the animation poses
+        self.poses = poses
+        self.pose_index = 0
 
 
-def render_guitar(obj_file_path, vc=colors['purple']):
-    # Load the guitar mesh from the obj file
-    mesh = Mesh(filename=obj_file_path)
+def create_model(path, n_comps, batch_size, pose, betas, global_orient, transl):
+    rh_model = mano.load(model_path=str(path),
+                        is_rhand= False,
+                        num_pca_comps=n_comps,
+                        batch_size=batch_size,
+                        flat_hand_mean=False)
 
-    # Optionally, set other properties such as wireframe or smooth
-    # mesh.wireframe = True
-    # mesh.smooth = True
+    output = rh_model(betas=betas,
+                    global_orient=global_orient,
+                    hand_pose=pose,
+                    transl=transl,
+                    return_verts=True,
+                    return_tips = True)
 
-    # Return the guitar mesh object
-    return mesh
 
-# Example usage:
-guitar_mesh = render_guitar("../../FINALMODEL.obj")
-# guitar_mesh.show()
+    h_meshes = rh_model.hand_meshes(output)
+    j_meshes = rh_model.joint_meshes(output)
 
-#visualize hand mesh only
-h_meshes[0].show()
+    # Example for one hand mesh; you may loop through `h_meshes` if multiple
+    hand_mesh = h_meshes[0]  # Assuming at least one mesh is present
 
-#visualize joints mesh only
-# j_meshes[0].show()
+    # Extract vertices and faces
+    vertices = hand_mesh.vertices  
+    faces = hand_mesh.faces  
 
-#visualize hand and joint meshes
-# hj_meshes = Mesh.concatenate_meshes([h_meshes[0], guitar_mesh])
-# hj_meshes.show() 
+    vertices_np = np.array(vertices).astype('float32')  # Ensure vertices are float32
+    faces_flat = faces.flatten().astype('int32')  # Ensure faces are flattened and int32
+
+
+    return vertices_np, faces_flat
+
+
+
+def setup():
+    app = Ursina()
+
+    # Fixed parameters
+    betas = torch.rand(batch_size, 10) * .1
+    global_orient = torch.rand(batch_size, 3) * .1
+    transl = torch.rand(batch_size, 3) * .1
+
+    poses = []  # Will store vertices for different poses
+    for _ in range(10):  # Assuming 10 poses for example
+        new_pose = torch.rand(batch_size, n_comps) * 0.2  # Randomly generate a new pose
+        vertices, faces = create_model(model_path, n_comps, batch_size, new_pose, betas, global_orient, transl)
+        poses.append((vertices.tolist(), faces.tolist()))
+        
+    initial_vertices, initial_faces = poses[0]  # Unpack the first pose
+
+    custom_mesh = Mesh(vertices=initial_vertices, triangles=initial_faces)  # Assuming triangles can be updated
+
+    custom_model = CustomModel(model=custom_mesh, vertices=initial_vertices, faces=initial_faces, color=color.blue)
+    custom_model.scale = Vec3(10, 10, 10)
+    custom_model.set_poses(poses)
+
+    EditorCamera()
+    app.run()
+
+
+setup()
 
