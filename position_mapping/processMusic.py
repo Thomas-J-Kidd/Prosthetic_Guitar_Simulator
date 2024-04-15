@@ -1,12 +1,14 @@
 # process data from music parser here
 import xml.etree.ElementTree as ET
-from position_mapping.music_classes import Note, Song
+from position_mapping.musicClasses import Note, Song
 
 def processMusic(fileName: str):
+    """Parses MusicXML file into Song class containing objects of class Notes"""
     tree = ET.parse(fileName)
     score = tree.getroot()
     songNotes = []
-    songName = score.find('part-list').find('score-part').find('part-name').text
+    # Depending XML file structure this section may have to be changed
+    songName = score.find('part-list').find('score-part').find('part-name').text 
 
     for part in score.iter('part'): 
         for measure in part: 
@@ -18,6 +20,7 @@ def processMusic(fileName: str):
                 timeSig = [beats, beatType]
                 tempo = float(measure.find('sound').attrib['tempo'])
                 print(tempo)
+
             else:
                 for note in measure:
                     if note.find('pitch') is not None:
@@ -25,6 +28,7 @@ def processMusic(fileName: str):
                         accidental = int(note.find('pitch').find('alter').text)
                         octave = int(note.find('pitch').find('octave').text)
                         duration = int(note.find('duration').text)
+
                     elif note.find('rest') is not None:
                         name = 'rest'
                         accidental = 0

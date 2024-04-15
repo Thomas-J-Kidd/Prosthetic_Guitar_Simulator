@@ -1,3 +1,6 @@
+This file is for useful information on how to parse the musicXML files using the
+etree Python library.
+
 <tag name="attribute">
     <info>data<info> .find('attribute').text = data
 

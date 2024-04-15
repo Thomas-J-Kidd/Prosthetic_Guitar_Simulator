@@ -1,3 +1,8 @@
+"""This file can be run to show a demo of the guitar model in the 3D 
+environment, and can also be used to locate the coordinates of each
+string and fret relative to the guitar object in the 3D environment.
+"""
+
 from ursina import *
 from ursina.prefabs import hot_reloader
 import sys

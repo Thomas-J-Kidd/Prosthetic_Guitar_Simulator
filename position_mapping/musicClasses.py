@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import yaml
 
+# absolute path for static data files
 with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/KeySig.yml', 'r') as file: 
     keySig_file = yaml.safe_load(file)
 
@@ -33,7 +34,11 @@ class Note:
         self.noteLengthTime = self.noteLengthBeats*(1.0/tempo)*60.0
 
     def findPos(self): 
-        """Function to find the position String, Fret, and Physical Position"""
+        """Function to find the position String, Fret, and Physical Position.
+        To apply a sharp or flat, the note octave and name are not transformed,
+        instead just changing the string and fret. If the note is a rest, string
+        and fret position are set to 0.
+        """
         if self.name == 'rest': 
             self.guitarFret = 0
             self.guitarString = 0
@@ -53,6 +58,7 @@ class Note:
 
             
     def printNoteAttribs(self): 
+        """Prints attributes of each note"""
         print('Name: ', self.name)
         print('Octave: ', self.noteNumber)
         print('Accidental: ', self.noteAccidental)
@@ -63,7 +69,13 @@ class Note:
 
 @dataclass
 class Song:
-    """Class for keeping track of song"""
+    """Class for keeping track of song
+    Parameters: 
+    notes: list[Note]
+    tempo: float
+    keySig: int
+    timeSig: tuple
+    """
     def __init__(self, notes: list[Note], tempo: float, keySig: int, timeSig: tuple): 
         self.notes = notes
         self.tempo = tempo

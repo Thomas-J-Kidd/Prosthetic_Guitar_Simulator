@@ -1,12 +1,18 @@
-from position_mapping import processMusic, music_classes
+"""This file contains the integration of the 3D environment and the
+position mapping module
+"""
+
+
+from position_mapping import processMusic, musicClasses
 from ursina import *
 from ursina.shaders import *
 import sys
 import time
 
+
 song = processMusic.processMusic('Twinkle')
 
-def playSong(song: music_classes.Song, counter: int):
+def playSong(song: musicClasses.Song, counter: int):
     time.sleep(2)
     note = song.notes[counter]
 

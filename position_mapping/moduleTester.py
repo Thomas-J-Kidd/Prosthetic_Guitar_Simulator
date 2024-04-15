@@ -1,4 +1,6 @@
-from music_classes import Note, Song
+"""Tests musicClasses for consistency"""
+
+from musicClasses import Note, Song
 import yaml
 
 
@@ -14,12 +16,14 @@ def tester(fileName: str, keySigTest: bool, accidentalTest: bool, rhythm: int) -
         timeSig = (testFile[i]['beat-type'],testFile[i]['beats'])
         keySig = testFile[i]['fifths']
 
+        # unpack notes and note attributes from test file
         for note in range(len(testFile[i]['notes'])):
             name = testFile[i]['notes'][note]['name'] # collect note name
             octave = testFile[i]['notes'][note]['octave'] # collect note octave
             duration = testFile[i]['notes'][note]['duration'] # collect note duration in beats
             accidental = testFile[i]['notes'][note]['accidental'] # collect sharps/flats
             
+            # Checks if a test for the accidental calculation should be run
             if accidentalTest == True: 
                 for acc in range(-2,2):
                     newNote = Note(name, acc, octave, duration)
@@ -28,7 +32,7 @@ def tester(fileName: str, keySigTest: bool, accidentalTest: bool, rhythm: int) -
                 newNote = Note(name, accidental, octave, duration)
                 notes.append(newNote)
 
-            
+        # Checks if a test for key signature transformation should be done
         if keySigTest == True: 
             for key in range(-7,7):
                 newSong = Song(notes, rhythm, key, timeSig)
@@ -41,6 +45,7 @@ def tester(fileName: str, keySigTest: bool, accidentalTest: bool, rhythm: int) -
         
             
     return tests
+
 
 testFile = 'unit_tests.yml'
 normalTest = tester(testFile, False, False, 60)
