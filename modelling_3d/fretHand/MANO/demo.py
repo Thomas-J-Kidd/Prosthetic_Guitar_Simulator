@@ -80,12 +80,12 @@ def setup():
 
     poses = []  # Will store vertices for different poses
     for _ in range(10):  # Assuming 10 poses for example
-        new_pose = torch.rand(batch_size, n_comps) * 0.2  # Randomly generate a new pose
+        new_pose = torch.zeros(batch_size, n_comps)  # Randomly generate a new pose
         vertices, faces = create_model(model_path, n_comps, batch_size, new_pose, betas, global_orient, transl)
         poses.append((vertices.tolist(), faces.tolist()))
         
     initial_vertices, initial_faces = poses[0]  # Unpack the first pose
-
+    print(f"Initial verices: {initial_faces}\nInitial faces: {initial_faces}")
     custom_mesh = Mesh(vertices=initial_vertices, triangles=initial_faces)  # Assuming triangles can be updated
 
     custom_model = CustomModel(model=custom_mesh, vertices=initial_vertices, faces=initial_faces, color=color.blue)
