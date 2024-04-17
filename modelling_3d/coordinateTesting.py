@@ -16,16 +16,24 @@ ec = EditorCamera(ignore_scroll_on_ui=True)
 rotation_info = Text(position=window.top_left)
 Light()
 
-guitar = Entity(model='guitarModel.obj', rotation=(0,-90,0),color=rgb(102, 255, 255), scale=(1.2,1.2,1.2),
-                world_position=Vec3(0,-4.5,-11), shader='unlit_shader', texture='heightmap_1',
-                eternal=True, collider='guitarModel.obj', billboard=True)
+guitar = Entity(model='Guitar2.obj', world_rotation=(67,158,40),color=rgb(102, 255, 255), scale=(1,1,1),
+                world_position=Vec3(-1.5,-9,9),  texture='heightmap_1',
+                eternal=True, collider='Guitar2.obj')
 
+inverseRot = -guitar.world_rotation
+#guitar.rotation = inverseRot
+#guitar.transform_setter(((0,-7,30), (62,167,33), (1,1,1)))
 guitar.enable
 
-dot = Entity(parent=guitar, model='circle', colorize=True, scale=(0.03,0.03,0.03), position=(-0.77, 3.95, 0.095),
-            rotation=(0,90,0))
 
-ySlide = Slider(max=4.2, min=2, position=(0.2, 0.1,0), step=0.005, setattr=(dot, 'y'))
-zSlide = Slider(max=0.15, min=-0.2, position=(0.2, 0,0), step=0.005, setattr=(dot, 'z'))
+dot = Entity(world_parent=guitar, model='circle', colorize=True, scale=(0.15,0.15,0.15), world_position=(0, 4, 3.9),
+            rotation=(67,158,40), collider='circle')
+xSlide = Slider(default=0, max=2, min=-0.6, position=(-0.7, 0.2,0), step=0.05, setattr=(dot, 'world_x'))
+ySlide = Slider(default=0, max=4, min=-3.8, position=(-0.7, 0.1,0), step=0.05, setattr=(dot, 'world_y'))
+#zSlide = Slider(default=15.5, max=15.5, min=14.9, position=(-0.7, 0,0), step=0.1, setattr=(dot, 'world_z'))
+
+#xRotSlide = Slider(default=67, max=360, min=0, position=(0.2, 0.2,0), step=1, setattr=(guitar, 'world_rotation_x'))
+#yRotSlide = Slider(default=158, max=360, min=0, position=(0.2, 0.1,0), step=1, setattr=(guitar, 'world_rotation_y'))
+#zRotSlide = Slider(default=40, max=360, min=0, position=(0.2, 0,0), step=1, setattr=(guitar, 'world_rotation_z'))
 
 space.run()

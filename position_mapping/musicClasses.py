@@ -7,8 +7,8 @@ with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/st
 
 #with open('PosDataPhys.yml', 'r') as file:
 #    posPhys_file = yaml.safe_load(file)
-
-with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/model1Phys.yml', 'r') as file:
+# change in accordance to model being used
+with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/model2Phys.yml', 'r') as file:
     posPhys_file = yaml.safe_load(file)
 
 with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/PosDataStrFrt.yml', 'r') as file:
@@ -26,8 +26,8 @@ class Note:
         self.noteLengthBeats = noteLengthBeats
         self.guitarString = 0
         self.guitarFret = 0
-        self.posX = 0
-        self.posY = 0
+        self.posX = -0.7
+        self.posY = 4
 
     def findLen(self, tempo: float): 
         """Function to calculate noteLengthTime in seconds"""

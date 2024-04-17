@@ -24,21 +24,21 @@ space = Ursina()
 Light()
 rotation_info = Text(position=window.top_left)
 
-guitar = Entity(model='guitarModel.obj', rotation=(0,-90,0), color=rgb(173, 216, 230), scale=(1,1,1),
-                position=Vec3(0,-4,-11),  shader='pixelation_shader', texture='heightmap_1',
-                eternal=True, collider='guitarModel.obj', billboard=True)
+guitar = Entity(model='Guitar2.obj', world_rotation=(67,158,40),color=rgb(102, 255, 255), scale=(1,1,1),
+                world_position=Vec3(-1.5,-9,9),  texture='heightmap_1', 
+                eternal=True, collider='Guitar2.obj')
 
 guitar.enable
 
 
-dot1 = Entity(parent=guitar,model='circle', colorize=True, scale=(0.03,0.03,0.03), position=(-0.75, 0, 0),
-            rotation=(0,90,0), color=rgb(255, 0, 0))
+dot1 = Entity(world_parent=guitar, model='circle', colorize=True, scale=(0.15,0.15,0.15), world_position=(0, 4, 3.9),
+            rotation=(67,158,40), collider='circle', color=rgb(255, 0, 0))
 
 i = 0
 while(i < len(song.notes)):
     space.step()
     note = song.notes[i]
-    dot1.position = (-0.75, note.posX, note.posY)
+    dot1.world_position = (note.posX, note.posY, 3.9)
     print(note.posX, note.posY)
     time.sleep(1)
     i = i + 1
