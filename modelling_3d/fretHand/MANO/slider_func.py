@@ -107,6 +107,25 @@ def create_orientation_slider(orient_index, min_value, max_value, step, default_
     slider.on_value_changed = on_orientation_changed
     return slider
 
+def create_translation_slider(orient_index, min_value, max_value, step, default_value, position_y, label, pose, betas, global_orient, transl, update_function):
+    slider = Slider(min=min_value, max=max_value, step=step, default=default_value, dynamic=True)
+    slider.x = 0
+    slider.y = position_y
+    slider.text = label
+    slider.parent = camera.ui
+
+    def on_orientation_changed(value=None):
+        if slider.value is not None:
+            print(f"Orientation {label} updated to: {slider.value} radians")
+            transl[0, orient_index] = slider.value
+            # Assuming re-creation or update of the model happens here:
+            vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
+            update_function(vertices, faces)
+        else:
+            print(f"Warning: Slider for {label} returned None")
+
+    slider.on_value_changed = on_orientation_changed
+    return slider
 
 
 
@@ -132,10 +151,15 @@ def setup():
     def update_hand(vertices, faces):
         custom_model.update_model(vertices, faces)
 
-    # In your setup function, add sliders for orientation:
+    # Global Orient Sliders
     create_orientation_slider(0, -np.pi, np.pi, 0.01, 0, 0.2, 'Rotate X', new_pose, betas, global_orient, transl, update_hand)
     create_orientation_slider(1, -np.pi, np.pi, 0.01, 0, 0.1, 'Rotate Y', new_pose, betas, global_orient, transl, update_hand)
     create_orientation_slider(2, -np.pi, np.pi, 0.01, 0, 0, 'Rotate Z', new_pose, betas, global_orient, transl, update_hand)
+
+    # Tranlational Sliders
+    create_translation_slider(0, -np.pi, np.pi, 0.01, 0, -0.3, 'Rotate X', new_pose, betas, global_orient, transl, update_hand)
+    create_translation_slider(1, -np.pi, np.pi, 0.01, 0, -0.2, 'Rotate Y', new_pose, betas, global_orient, transl, update_hand)
+    create_translation_slider(2, -np.pi, np.pi, 0.01, 0, -0.1, 'Rotate Z', new_pose, betas, global_orient, transl, update_hand)
 
     # Creating sliders for different joints
     # create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, new_pose, betas, global_orient, transl)
