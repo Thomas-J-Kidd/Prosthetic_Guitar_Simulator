@@ -127,22 +127,32 @@ def create_translation_slider(orient_index, min_value, max_value, step, default_
     slider.on_value_changed = on_orientation_changed
     return slider
 
-
+def save_position(filename, pose, betas, orientation, transl):
+    if not os.path.exists('positions'):
+        os.makedirs('positions')
+    with open(f'positions/{filename}.txt', 'w') as f:
+        data = {
+            'pose': pose.tolist(),
+            'betas': betas.tolist(),
+            'orientation': orientation.tolist(),
+            'transl': transl.tolist()
+        }
+        f.write(str(data))  # Simple save as string representation of the dictionary
+    print(f'Position saved as {filename}.txt in "positions" directory')
 
 from ursina import *
 
 def setup():
-    app = Ursina()
+    # set up app
+    app = Ursina(borderless=False, fullscreen=True)
+    # window.color = color.light_gray
 
-    # Fixed parameters
-    betas = torch.rand(batch_size, 10) * .1
-    global_orient = torch.rand(batch_size, 3) * .1
-    transl = torch.rand(batch_size, 3) * .1
+    # default pose
+    new_pose = torch.zeros(batch_size, n_comps)  
+    betas = torch.zeros(batch_size, 10) 
+    global_orient = torch.zeros(batch_size, 3) 
+    transl = torch.zeros(batch_size, 3)
 
-    print(f"Global orient: {global_orient}")
-    print(f"Translation: {transl}")
-
-    new_pose = torch.zeros(batch_size, n_comps)  # Start with a neutral pose
     vertices, faces = create_model(model_path, n_comps, batch_size, new_pose, betas, global_orient, transl)
     custom_mesh = Mesh(vertices=vertices, triangles=faces)
     custom_model = CustomModel(model=custom_mesh, vertices=vertices, faces=faces, color=color.blue)
@@ -165,7 +175,40 @@ def setup():
     # create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, new_pose, betas, global_orient, transl)
     # create_joint_slider(5, -2, 2, 0.01, 0, -0.5, 0.2, "Index Middle Pose", update_hand, new_pose, betas, global_orient, transl)
     # create_joint_slider(8, -2, 2, 0.01, 0, -0.5, 0, "Index Tip Pose", update_hand, new_pose, betas, global_orient, transl)
+    
 
+    # Button to save the position
+    def on_save():
+        filename = input_field.text if input_field.text else 'default_position'
+        save_position(filename, new_pose, betas, global_orient, transl)
+    
+    # button for reset
+    def on_reset():
+        new_pose = torch.zeros(batch_size, n_comps)  
+        betas = torch.zeros(batch_size, 10) 
+        global_orient = torch.zeros(batch_size, 3) 
+        transl = torch.zeros(batch_size, 3)
+        vertices, faces = create_model(model_path, n_comps, batch_size, new_pose, betas, global_orient, transl)
+        custom_model.update_model(vertices, faces)
+
+
+    # Text field for filename
+    input_field = InputField(default_value='filename', scale=(0.05, 0.05), size=Vec2(0.1, 0.04))
+    input_field.x = 0.6  # Adjust according to the full screen
+    input_field.y = 0.43
+    input_field.max_length = 20  # Limit text input length if necessary
+
+    # Button to save the position
+    save_button = Button(text='Save', scale=(0.05, 0.05), color=color.azure)
+    save_button.x = 0.6
+    save_button.y = 0.48
+    save_button.on_click = lambda: on_save()
+
+    # Button to save the position
+    reset_button = Button(text='Reset', scale=(0.08, 0.05), color=color.azure)
+    reset_button.x = -0.6
+    reset_button.y = 0.48
+    reset_button.on_click = lambda: on_reset()
 
     EditorCamera()
     app.run()
