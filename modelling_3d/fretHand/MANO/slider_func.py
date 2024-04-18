@@ -197,7 +197,7 @@ def setup():
     #vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
     custom_mesh = Mesh(vertices=vertices, triangles=faces)
     custom_model = CustomModel(model=custom_mesh, vertices=vertices, faces=faces, color=color.blue)
-    custom_model.scale = Vec3(20, 20, 20)
+    custom_model.scale = Vec3(22, 22, 22)
 
     def update_hand(vertices, faces, pose_updated, betas_updated, global_orient_updated, transl_updated):
         custom_model.update_model(vertices, faces)
@@ -220,7 +220,8 @@ def setup():
     create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, pose, betas, global_orient, transl)
     create_joint_slider(5, -2, 2, 0.01, 0, -0.5, 0.2, "Index Middle Pose", update_hand, pose, betas, global_orient, transl)
     create_joint_slider(8, -2, 2, 0.01, 0, -0.5, 0, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
-    
+    create_joint_slider(21, -2, 2, 0.01, 0, -0.5, -0.2, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
+
 
     # Button to save the position
     def on_save():
@@ -229,10 +230,7 @@ def setup():
     
     # button for reset
     def on_reset():
-        pose = torch.zeros(batch_size, n_comps)  
-        betas = torch.zeros(batch_size, 10) 
-        global_orient = torch.zeros(batch_size, 3) 
-        transl = torch.zeros(batch_size, 3)
+        vertices, faces, pose, betas, global_orient, transl, = load_default_position()
         vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
         custom_model.update_model(vertices, faces)
 
