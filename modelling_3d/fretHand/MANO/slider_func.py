@@ -6,6 +6,8 @@ from OpenGL.GL import *
 import numpy as np
 from ursina import *
 from time import time
+from pathlib import Path
+import json
 
 model_path = Path('../mano_v1_2/models')
 n_comps = 45
@@ -36,7 +38,7 @@ class CustomModel(Entity):
 
 def create_model(path, n_comps, batch_size, pose, betas, global_orient, transl):
     lh_model = mano.load(model_path=str(path),
-                        is_rhand = False,
+                        is_rhand = True,
                         num_pca_comps=n_comps,
                         batch_size=batch_size,
                         flat_hand_mean=False)
@@ -71,7 +73,7 @@ def create_joint_slider(joint_index, min_value, max_value, step, default_value, 
     slider.y = position_y
     slider.text = label
     slider.parent = camera.ui
-    new_pose = torch.zeros(batch_size, n_comps)  # Start with a neutral pose
+    pose = torch.zeros(batch_size, n_comps)  # Start with a neutral pose
 
     
     def slider_value_changed(value=None):
@@ -127,18 +129,39 @@ def create_translation_slider(orient_index, min_value, max_value, step, default_
     slider.on_value_changed = on_orientation_changed
     return slider
 
-def save_position(filename, pose, betas, orientation, transl):
-    if not os.path.exists('positions'):
-        os.makedirs('positions')
-    with open(f'positions/{filename}.txt', 'w') as f:
+def save_position(filename, model):
+    position_dir = Path('positions')
+    position_dir.mkdir(exist_ok=True)
+    with open(position_dir / f'{filename}.txt', 'w') as f:
         data = {
-            'pose': pose.tolist(),
-            'betas': betas.tolist(),
-            'orientation': orientation.tolist(),
-            'transl': transl.tolist()
+            'vertices': model.vertices,
+            'faces': model.faces,
+            
         }
-        f.write(str(data))  # Simple save as string representation of the dictionary
+        json.dump(data, f)  # Using json.dump for better formatting
     print(f'Position saved as {filename}.txt in "positions" directory')
+
+def load_default_position():
+    default_file = Path('positions/default.txt')
+    if default_file.exists():
+        with open(default_file, 'r') as file:
+            data = json.loads(file.read())
+            vertices = torch.tensor(data['vertices'])
+            faces = torch.tensor(data['faces'])
+            return vertices.tolist(), faces.tolist()
+            
+    else:
+        # Define default tensors if the file does not exist
+        n_comps = 45  # Total components in the pose tensor
+        batch_size = 1
+        pose = torch.zeros((batch_size, n_comps))
+        betas = torch.zeros((batch_size, 10))
+        global_orient = torch.zeros((batch_size, 3))
+        transl = torch.zeros((batch_size, 3))
+        vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
+        return vertices, faces
+
+    
 
 from ursina import *
 
@@ -147,13 +170,16 @@ def setup():
     app = Ursina(borderless=False, fullscreen=True)
     # window.color = color.light_gray
 
-    # default pose
-    new_pose = torch.zeros(batch_size, n_comps)  
-    betas = torch.zeros(batch_size, 10) 
-    global_orient = torch.zeros(batch_size, 3) 
-    transl = torch.zeros(batch_size, 3)
+    # load in default pose
+    vertices, faces = load_default_position()
+    print(f"vertices {vertices}")
 
-    vertices, faces = create_model(model_path, n_comps, batch_size, new_pose, betas, global_orient, transl)
+    pose = torch.zeros((batch_size, n_comps))
+    betas = torch.zeros((batch_size, 10))
+    global_orient = torch.zeros((batch_size, 3))
+    transl = torch.zeros((batch_size, 3))
+
+    #vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
     custom_mesh = Mesh(vertices=vertices, triangles=faces)
     custom_model = CustomModel(model=custom_mesh, vertices=vertices, faces=faces, color=color.blue)
     custom_model.scale = Vec3(50, 50, 50)
@@ -162,38 +188,38 @@ def setup():
         custom_model.update_model(vertices, faces)
 
     # Global Orient Sliders
-    create_orientation_slider(0, -np.pi, np.pi, 0.01, 0, 0.2, 'Rotate X', new_pose, betas, global_orient, transl, update_hand)
-    create_orientation_slider(1, -np.pi, np.pi, 0.01, 0, 0.1, 'Rotate Y', new_pose, betas, global_orient, transl, update_hand)
-    create_orientation_slider(2, -np.pi, np.pi, 0.01, 0, 0, 'Rotate Z', new_pose, betas, global_orient, transl, update_hand)
+    create_orientation_slider(0, -np.pi, np.pi, 0.01, 0, 0.2, 'Rotate X', pose, betas, global_orient, transl, update_hand)
+    create_orientation_slider(1, -np.pi, np.pi, 0.01, 0, 0.1, 'Rotate Y', pose, betas, global_orient, transl, update_hand)
+    create_orientation_slider(2, -np.pi, np.pi, 0.01, 0, 0, 'Rotate Z', pose, betas, global_orient, transl, update_hand)
 
     # Tranlational Sliders
-    create_translation_slider(0, -np.pi, np.pi, 0.01, 0, -0.3, 'Rotate X', new_pose, betas, global_orient, transl, update_hand)
-    create_translation_slider(1, -np.pi, np.pi, 0.01, 0, -0.2, 'Rotate Y', new_pose, betas, global_orient, transl, update_hand)
-    create_translation_slider(2, -np.pi, np.pi, 0.01, 0, -0.1, 'Rotate Z', new_pose, betas, global_orient, transl, update_hand)
+    create_translation_slider(0, -np.pi, np.pi, 0.01, 0, -0.3, 'Rotate X', pose, betas, global_orient, transl, update_hand)
+    create_translation_slider(1, -np.pi, np.pi, 0.01, 0, -0.2, 'Rotate Y', pose, betas, global_orient, transl, update_hand)
+    create_translation_slider(2, -np.pi, np.pi, 0.01, 0, -0.1, 'Rotate Z', pose, betas, global_orient, transl, update_hand)
 
     # Creating sliders for different joints
-    # create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, new_pose, betas, global_orient, transl)
-    # create_joint_slider(5, -2, 2, 0.01, 0, -0.5, 0.2, "Index Middle Pose", update_hand, new_pose, betas, global_orient, transl)
-    # create_joint_slider(8, -2, 2, 0.01, 0, -0.5, 0, "Index Tip Pose", update_hand, new_pose, betas, global_orient, transl)
+    # create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, pose, betas, global_orient, transl)
+    # create_joint_slider(5, -2, 2, 0.01, 0, -0.5, 0.2, "Index Middle Pose", update_hand, pose, betas, global_orient, transl)
+    # create_joint_slider(8, -2, 2, 0.01, 0, -0.5, 0, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
     
 
     # Button to save the position
     def on_save():
         filename = input_field.text if input_field.text else 'default_position'
-        save_position(filename, new_pose, betas, global_orient, transl)
+        save_position(filename, custom_model)
     
     # button for reset
     def on_reset():
-        new_pose = torch.zeros(batch_size, n_comps)  
+        pose = torch.zeros(batch_size, n_comps)  
         betas = torch.zeros(batch_size, 10) 
         global_orient = torch.zeros(batch_size, 3) 
         transl = torch.zeros(batch_size, 3)
-        vertices, faces = create_model(model_path, n_comps, batch_size, new_pose, betas, global_orient, transl)
+        vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
         custom_model.update_model(vertices, faces)
 
 
     # Text field for filename
-    input_field = InputField(default_value='filename', scale=(0.05, 0.05), size=Vec2(0.1, 0.04))
+    input_field = InputField(default_value='filename', scale=(0.2, 0.05), size=Vec2(0.1, 0.04))
     input_field.x = 0.6  # Adjust according to the full screen
     input_field.y = 0.43
     input_field.max_length = 20  # Limit text input length if necessary
