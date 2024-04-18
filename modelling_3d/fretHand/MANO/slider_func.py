@@ -207,9 +207,9 @@ def setup():
         transl_updated
 
     # Global Orient Sliders
-    # create_orientation_slider(0, -np.pi, np.pi, 0.01, 0, 0.2, 'Rotate X', pose, betas, global_orient, transl, update_hand)
-    # create_orientation_slider(1, -np.pi, np.pi, 0.01, 0, 0.1, 'Rotate Y', pose, betas, global_orient, transl, update_hand)
-    # create_orientation_slider(2, -np.pi, np.pi, 0.01, 0, 0, 'Rotate Z', pose, betas, global_orient, transl, update_hand)
+    create_orientation_slider(0, -np.pi, np.pi, 0.01, 0, 0.2, 'Rotate X', pose, betas, global_orient, transl, update_hand)
+    create_orientation_slider(1, -np.pi, np.pi, 0.01, 0, 0.1, 'Rotate Y', pose, betas, global_orient, transl, update_hand)
+    create_orientation_slider(2, -np.pi, np.pi, 0.01, 0, 0, 'Rotate Z', pose, betas, global_orient, transl, update_hand)
 
     # Tranlational Sliders
     # create_translation_slider(0, -np.pi, np.pi, 0.01, 0, -0.3, 'Rotate X', pose, betas, global_orient, transl, update_hand)
@@ -217,11 +217,10 @@ def setup():
     # create_translation_slider(2, -np.pi, np.pi, 0.01, 0, -0.1, 'Rotate Z', pose, betas, global_orient, transl, update_hand)
 
     # Creating sliders for different joints
-    create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, pose, betas, global_orient, transl)
-    create_joint_slider(5, -2, 2, 0.01, 0, -0.5, 0.2, "Index Middle Pose", update_hand, pose, betas, global_orient, transl)
-    create_joint_slider(8, -2, 2, 0.01, 0, -0.5, 0, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
-    create_joint_slider(20, -2, 2, 0.01, 0, -0.5, -0.2, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
-
+    # create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, pose, betas, global_orient, transl)
+    # create_joint_slider(5, -2, 2, 0.01, 0, -0.5, 0.2, "Index Middle Pose", update_hand, pose, betas, global_orient, transl)
+    # create_joint_slider(8, -2, 2, 0.01, 0, -0.5, 0, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
+    
 
     # Button to save the position
     def on_save():
