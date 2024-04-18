@@ -18,20 +18,20 @@ with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/st
 class Note: 
     """Class for keeping track of music notes"""
 
-    def __init__ (self, name: str, noteAccidental: int, noteNumber: int, noteLengthBeats: float): 
+    def __init__ (self, name: str, noteAccidental: int, noteNumber: int, noteLength: int): 
         """initializer function"""
         self.name = name
         self.noteNumber = noteNumber
         self.noteAccidental = noteAccidental
-        self.noteLengthBeats = noteLengthBeats
+        self.noteLength = noteLength
         self.guitarString = 0
         self.guitarFret = 0
         self.posX = -0.7
         self.posY = 4
 
-    def findLen(self, tempo: float): 
+    def findLen(self, divisions: int, tempo: int): 
         """Function to calculate noteLengthTime in seconds"""
-        self.noteLengthTime = self.noteLengthBeats*(1.0/tempo)*60.0
+        self.noteLengthTime = (self.noteLength/divisions)*(60.0/tempo)
 
     def findPos(self): 
         """Function to find the position String, Fret, and Physical Position.
@@ -62,7 +62,7 @@ class Note:
         print('Name: ', self.name)
         print('Octave: ', self.noteNumber)
         print('Accidental: ', self.noteAccidental)
-        print('Duration: ', self.noteLengthBeats)
+        print('Duration: ', self.noteLength)
         print('Time: ', self.noteLengthTime)
         print('String: ', self.guitarString)
         print('Fret: ', self.guitarFret)
@@ -76,16 +76,17 @@ class Song:
     keySig: int
     timeSig: tuple
     """
-    def __init__(self, notes: list[Note], tempo: float, keySig: int, timeSig: tuple): 
+    def __init__(self, notes: list[Note], tempo: float, keySig: int, timeSig: tuple, divisions: int): 
         self.notes = notes
         self.tempo = tempo
         self.keySig = keySig
         self.timeSig = timeSig
-
+        self.divisions = divisions
+        
         self.keyTransform()
         if notes is not None: 
             for note in notes:
-                note.findLen(self.tempo)
+                note.findLen(self.divisions, self.tempo)
                 note.findPos()
 
     def keyTransform (self):
