@@ -220,7 +220,7 @@ def setup():
     create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, pose, betas, global_orient, transl)
     create_joint_slider(5, -2, 2, 0.01, 0, -0.5, 0.2, "Index Middle Pose", update_hand, pose, betas, global_orient, transl)
     create_joint_slider(8, -2, 2, 0.01, 0, -0.5, 0, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
-    create_joint_slider(21, -2, 2, 0.01, 0, -0.5, -0.2, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
+    create_joint_slider(20, -2, 2, 0.01, 0, -0.5, -0.2, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
 
 
     # Button to save the position
