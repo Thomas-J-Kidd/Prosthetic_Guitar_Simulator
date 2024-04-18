@@ -3,14 +3,15 @@ position mapping module
 """
 
 
-from position_mapping import processMusic, musicClasses
+from position_mapping import XMLInterpret, musicClasses
 from ursina import *
 from ursina.shaders import *
 import sys
 import time
 
 
-song = processMusic.processMusic('Twinkle')
+song = XMLInterpret.XMLInterpret('musicXML_Files/output.musicxml')
+
 
 def playSong(song: musicClasses.Song, counter: int):
     time.sleep(2)
@@ -34,13 +35,16 @@ guitar.enable
 dot1 = Entity(world_parent=guitar, model='circle', colorize=True, scale=(0.15,0.15,0.15), world_position=(0, 4, 3.9),
             rotation=(67,158,40), collider='circle', color=rgb(255, 0, 0))
 
+
 i = 0
+time.sleep(1)
 while(i < len(song.notes)):
     space.step()
-    note = song.notes[i]
+    note = song.notes[i]    
+    length = note.noteLengthTime
     dot1.world_position = (note.posX, note.posY, 3.9)
     print(note.posX, note.posY)
-    time.sleep(1)
+    time.sleep(length)
     i = i + 1
 
 

@@ -18,7 +18,7 @@ with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/st
 class Note: 
     """Class for keeping track of music notes"""
 
-    def __init__ (self, name: str, noteAccidental: int, noteNumber: int, noteLength: int): 
+    def __init__ (self, name: str, noteAccidental: int, noteNumber: int, noteLength: float): 
         """initializer function"""
         self.name = name
         self.noteNumber = noteNumber
@@ -29,7 +29,7 @@ class Note:
         self.posX = -0.7
         self.posY = 4
 
-    def findLen(self, divisions: int, tempo: int): 
+    def findLen(self, divisions: float, tempo: float): 
         """Function to calculate noteLengthTime in seconds"""
         self.noteLengthTime = (self.noteLength/divisions)*(60.0/tempo)
 
@@ -45,7 +45,7 @@ class Note:
         try:
             self.guitarString, self.guitarFret = posStrFrt_file[self.name][self.noteNumber]
         except KeyError: 
-            # print("Octave is not valid")
+            print("Octave is not valid")
             return None
         else:
             self.guitarString, self.guitarFret = posStrFrt_file[self.name][self.noteNumber]
@@ -76,7 +76,7 @@ class Song:
     keySig: int
     timeSig: tuple
     """
-    def __init__(self, notes: list[Note], tempo: float, keySig: int, timeSig: tuple, divisions: int): 
+    def __init__(self, notes: list[Note], tempo: float, keySig: int, timeSig: tuple, divisions: float): 
         self.notes = notes
         self.tempo = tempo
         self.keySig = keySig
