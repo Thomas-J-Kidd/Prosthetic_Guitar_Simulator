@@ -14,6 +14,9 @@ with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/st
 with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/PosDataStrFrt.yml', 'r') as file:
     posStrFrt_file = yaml.safe_load(file)
 
+with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/AniStrFrt.yml', 'r') as file:
+    animation_file = yaml.safe_load(file)
+
 @dataclass
 class Note: 
     """Class for keeping track of music notes"""
@@ -56,7 +59,11 @@ class Note:
             self.guitarFret = self.guitarFret + self.noteAccidental
             self.posX, self.posY = posPhys_file['String'][self.guitarString]['Fret'][self.guitarFret]
 
-            
+    
+    def findAnimation(self): 
+        """Function to find the animation positions for hand model"""
+        self.animation = animation_file['String'][self.guitarString]['Fret'][self.guitarFret]
+
     def printNoteAttribs(self): 
         """Prints attributes of each note"""
         print('Name: ', self.name)
@@ -88,6 +95,7 @@ class Song:
             for note in notes:
                 note.findLen(self.divisions, self.tempo)
                 note.findPos()
+                note.findAnimation()
 
     def keyTransform (self):
         """Function to transform notes to actual notes based on key"""
