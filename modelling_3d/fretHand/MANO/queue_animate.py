@@ -47,7 +47,7 @@ class CustomModel(Entity):
         self.animation_time = 0
         self.animation_duration = 2
         self.ready = True
-        self.animation_queue = ["Middle f2s1", "default", "Middle f2s2", "Index f1s3", ] 
+        self.animation_queue = ["Middlef2s1", "default", "Middlef2s2", "Indexf1s3", ] 
 
     def setup_initial_model(self, vertices, faces):
         self.vertices = vertices
