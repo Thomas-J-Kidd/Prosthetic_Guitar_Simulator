@@ -4,3 +4,4 @@ modelling_3d/fretHand/MANO/env
 modelling_3d/fretHand/MANO/venv
 modelling_3d/fretHand/MANO/models_compressed
 modelling_3d/fretHand/MANO/mano/__pycache__/
+position_mapping/__pycache__/

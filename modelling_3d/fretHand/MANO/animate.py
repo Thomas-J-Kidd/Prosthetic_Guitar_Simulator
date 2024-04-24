@@ -117,10 +117,6 @@ def load_position(position_path="default"):
         return vertices, faces, pose, betas, global_orient, transl,
 
 
-# def interpolate(start_pose, end_pose, alpha):
-#     """ Linearly interpolate between two poses. """
-#     print("Updating pose")
-#     return start_pose * (1 - alpha) + end_pose * alpha
 
 from ursina import *
 
@@ -149,16 +145,6 @@ def setup():
     custom_mesh = Mesh(vertices=vertices, triangles=faces)
     custom_model = CustomModel(model=custom_mesh, vertices=vertices, faces=faces, color=color.blue)
     custom_model.scale = Vec3(22, 22, 22)
-
-    logging.debug("Outside of update function")
-    
-
-    def update_hand(vertices, faces, pose_updated, betas_updated, global_orient_updated, transl_updated):
-        custom_model.update_model(vertices, faces)
-        pose = pose_updated
-        betas = betas_updated
-        global_orient = global_orient_updated
-        trans_l = transl_updated
 
     EditorCamera()
     app.run()

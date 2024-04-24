@@ -74,6 +74,7 @@ def create_joint_slider(joint_index, min_value, max_value, step, default_value, 
     slider.y = position_y
     slider.text = label
     slider.parent = camera.ui
+    #pose = torch.zeros(batch_size, n_comps)  # Start with a neutral pose
 
     
     def slider_value_changed(value=None):
@@ -83,7 +84,7 @@ def create_joint_slider(joint_index, min_value, max_value, step, default_value, 
         print(f"Updating joint {joint_index} with value: {slider.value}")
         pose[:, joint_index] = slider.value
         vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
-        update_function(vertices, faces, pose, betas, global_orient, transl)
+        update_function(vertices, faces)
 
     print(f"Slider value: {slider.value}")
     slider.on_value_changed = slider_value_changed 
@@ -100,8 +101,9 @@ def create_orientation_slider(orient_index, min_value, max_value, step, default_
         if slider.value is not None:
             print(f"Orientation {label} updated to: {slider.value} radians")
             global_orient[0, orient_index] = slider.value
+            # Assuming re-creation or update of the model happens here:
             vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
-            update_function(vertices, faces, pose, betas, global_orient, transl)
+            update_function(vertices, faces)
         else:
             print(f"Warning: Slider for {label} returned None")
 
@@ -119,58 +121,46 @@ def create_translation_slider(orient_index, min_value, max_value, step, default_
         if slider.value is not None:
             print(f"Orientation {label} updated to: {slider.value} radians")
             transl[0, orient_index] = slider.value
+            # Assuming re-creation or update of the model happens here:
             vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
-            update_function(vertices, faces, pose, betas, global_orient, transl)
+            update_function(vertices, faces)
         else:
             print(f"Warning: Slider for {label} returned None")
 
     slider.on_value_changed = on_orientation_changed
     return slider
 
-def save_position(filename, model, pose, betas, global_orient, transl):
+def save_position(filename, model):
     position_dir = Path('positions')
     position_dir.mkdir(exist_ok=True)
     with open(position_dir / f'{filename}.txt', 'w') as f:
         data = {
             'vertices': model.vertices,
             'faces': model.faces,
-            'pose': pose.tolist(),
-            'betas': betas.tolist(),
-            'global_orient': global_orient.tolist(),
-            'transl': transl.tolist()
             
         }
-        json.dump(data, f) 
+        json.dump(data, f)  # Using json.dump for better formatting
     print(f'Position saved as {filename}.txt in "positions" directory')
 
 def load_default_position():
     default_file = Path('positions/default.txt')
     if default_file.exists():
         with open(default_file, 'r') as file:
-            # grab json data
             data = json.loads(file.read())
-            # default values
-            n_comps = 45
-            batch_size = 1
-            # grab json data from data
-            pose = torch.tensor(data['pose'])
-            betas = torch.tensor(data['betas'])
-            global_orient = torch.tensor(data['global_orient'])
-            transl = torch.tensor(data['transl'])
-            # creat model
-            vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
-            return vertices, faces, pose, betas, global_orient, transl,
+            vertices = torch.tensor(data['vertices'])
+            faces = torch.tensor(data['faces'])
+            return vertices.tolist(), faces.tolist()
             
     else:
         # Define default tensors if the file does not exist
-        n_comps = 45  
+        n_comps = 45  # Total components in the pose tensor
         batch_size = 1
         pose = torch.zeros((batch_size, n_comps))
         betas = torch.zeros((batch_size, 10))
         global_orient = torch.zeros((batch_size, 3))
         transl = torch.zeros((batch_size, 3))
         vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
-        return vertices, faces, pose, betas, global_orient, transl,
+        return vertices, faces
 
     
 
@@ -181,6 +171,8 @@ def setup():
     app = Ursina(borderless=False, fullscreen=True)
 
     camera.position = (0, 0, -10)
+    # test_cube = Entity(model='cube', color=color.orange, scale=2)
+    #guitar = Entity(model=str(guitar_path), scale=100, position=(0, 0, -1))
     #DirectionalLight(color=color.white, direction=(1, -1, 1))
 
     # Load guitar model
@@ -192,44 +184,49 @@ def setup():
     # window.color = color.light_gray
 
     # load in default pose
-    vertices, faces, pose, betas, global_orient, transl, = load_default_position()
+    vertices, faces = load_default_position()
+    print(f"vertices {vertices}")
+
+    pose = torch.zeros((batch_size, n_comps))
+    betas = torch.zeros((batch_size, 10))
+    global_orient = torch.zeros((batch_size, 3))
+    transl = torch.zeros((batch_size, 3))
 
     #vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
     custom_mesh = Mesh(vertices=vertices, triangles=faces)
     custom_model = CustomModel(model=custom_mesh, vertices=vertices, faces=faces, color=color.blue)
-    custom_model.scale = Vec3(22, 22, 22)
+    custom_model.scale = Vec3(20, 20, 20)
 
-    def update_hand(vertices, faces, pose_updated, betas_updated, global_orient_updated, transl_updated):
+    def update_hand(vertices, faces):
         custom_model.update_model(vertices, faces)
-        pose = pose_updated
-        betas = betas_updated
-        global_orient = global_orient_updated
-        transl = transl_updated
 
     # Global Orient Sliders
-    # create_orientation_slider(0, -np.pi, np.pi, 0.01, 0, 0.2, 'Rotate X', pose, betas, global_orient, transl, update_hand)
-    # create_orientation_slider(1, -np.pi, np.pi, 0.01, 0, 0.1, 'Rotate Y', pose, betas, global_orient, transl, update_hand)
+    create_orientation_slider(0, -np.pi, np.pi, 0.01, 0, 0.2, 'Rotate X', pose, betas, global_orient, transl, update_hand)
+    create_orientation_slider(1, -np.pi, np.pi, 0.01, 0, 0.1, 'Rotate Y', pose, betas, global_orient, transl, update_hand)
     # create_orientation_slider(2, -np.pi, np.pi, 0.01, 0, 0, 'Rotate Z', pose, betas, global_orient, transl, update_hand)
 
     # Tranlational Sliders
-    # create_translation_slider(0, -np.pi, np.pi, 0.01, 0, -0.3, 'Rotate X', pose, betas, global_orient, transl, update_hand)
-    # create_translation_slider(1, -np.pi, np.pi, 0.01, 0, -0.2, 'Rotate Y', pose, betas, global_orient, transl, update_hand)
-    # create_translation_slider(2, -np.pi, np.pi, 0.01, 0, -0.1, 'Rotate Z', pose, betas, global_orient, transl, update_hand)
+    create_translation_slider(0, -np.pi, np.pi, 0.01, 0, -0.3, 'Rotate X', pose, betas, global_orient, transl, update_hand)
+    create_translation_slider(1, -np.pi, np.pi, 0.01, 0, -0.2, 'Rotate Y', pose, betas, global_orient, transl, update_hand)
+    create_translation_slider(2, -np.pi, np.pi, 0.01, 0, -0.1, 'Rotate Z', pose, betas, global_orient, transl, update_hand)
 
     # Creating sliders for different joints
-    create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, pose, betas, global_orient, transl)
-    create_joint_slider(5, -2, 2, 0.01, 0, -0.5, 0.2, "Index Middle Pose", update_hand, pose, betas, global_orient, transl)
-    create_joint_slider(8, -2, 2, 0.01, 0, -0.5, 0, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
+    # create_joint_slider(2, -2, 2, 0.01, 0, -0.5, 0.4, "Index Base Pose", update_hand, pose, betas, global_orient, transl)
+    # create_joint_slider(5, -2, 2, 0.01, 0, -0.5, 0.2, "Index Middle Pose", update_hand, pose, betas, global_orient, transl)
+    # create_joint_slider(8, -2, 2, 0.01, 0, -0.5, 0, "Index Tip Pose", update_hand, pose, betas, global_orient, transl)
     
 
     # Button to save the position
     def on_save():
         filename = input_field.text if input_field.text else 'default_position'
-        save_position(filename, custom_model, pose, betas, global_orient, transl)
+        save_position(filename, custom_model)
     
     # button for reset
     def on_reset():
-        vertices, faces, pose, betas, global_orient, transl, = load_default_position()
+        pose = torch.zeros(batch_size, n_comps)  
+        betas = torch.zeros(batch_size, 10) 
+        global_orient = torch.zeros(batch_size, 3) 
+        transl = torch.zeros(batch_size, 3)
         vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
         custom_model.update_model(vertices, faces)
 
