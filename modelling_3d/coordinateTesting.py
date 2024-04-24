@@ -4,11 +4,15 @@ string and fret relative to the guitar object in the 3D environment.
 """
 
 from ursina import *
-from ursina.prefabs import hot_reloader
+from ursina.prefabs.file_browser import FileBrowser
+from ursina.prefabs.dropdown_menu import DropdownMenu, DropdownMenuButton
 import sys
 from ursina.shaders import *
 
 original_stdout = sys.stdout
+
+
+fileList = ['file1.txt', 'file2.txt']
 
 space = Ursina()
 
@@ -35,5 +39,27 @@ ySlide = Slider(default=0, max=4, min=-3.8, position=(-0.7, 0.1,0), step=0.05, s
 #xRotSlide = Slider(default=67, max=360, min=0, position=(0.2, 0.2,0), step=1, setattr=(guitar, 'world_rotation_x'))
 #yRotSlide = Slider(default=158, max=360, min=0, position=(0.2, 0.1,0), step=1, setattr=(guitar, 'world_rotation_y'))
 #zRotSlide = Slider(default=40, max=360, min=0, position=(0.2, 0,0), step=1, setattr=(guitar, 'world_rotation_z'))
+
+# demo running logic 
+
+
+# for choosing musicxml file to parse
+fb = FileBrowser(file_types=('.musicxml'), enabled=False)
+
+def on_submit(paths):
+    print('-------', paths)
+    for p in paths:
+        print('---', p)
+
+fb.on_submit = on_submit
+
+def input(key):
+    if key == 'tab':
+        fb.enabled = not fb.enabled
+
+# play button
+playButton = Button(text='Play', model='circle', scale=0.2, origin=(-2.5,-1.5,0))
+playButton.on_click = demo()
+
 
 space.run()
