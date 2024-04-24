@@ -1,0 +1,13 @@
+#pip install opencv-python
+#pip install matplotlib
+#pip install midiutil
+#pip install music21
+
+#How to use:
+#Set directory to the location of the main file for CadenCV. 
+#Command to run OMR: python main.py '(directory)/image.jpg'
+#Will output a MIDI sequence to the output folder in CadenCV
+
+#From there run midi2xml
+#set the directories in the python program as needed
+#command to run the converter: python midi2xml.py
