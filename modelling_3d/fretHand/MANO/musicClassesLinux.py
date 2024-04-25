@@ -116,6 +116,7 @@ class Song:
         self.divisions = divisions
         
         self.keyTransform()
+        self.Transpose()
         if notes is not None: 
             for note in notes:
                 note.findLen(self.divisions, self.tempo)
@@ -137,6 +138,12 @@ class Song:
                     # find new finger position 
                     note.findPos() 
 
+
+    def Transpose(self):
+        """Function to transpose sheet music to guitar correctly"""
+        if self.notes is not None: # Check if note exists
+            for note in self.notes:
+                note.noteNumber = note.noteNumber - 1
 
     def printAttribs(self): 
         """Function to print attributes of song to console for testing and debugging"""

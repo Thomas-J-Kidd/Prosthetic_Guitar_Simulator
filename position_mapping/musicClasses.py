@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import yaml
+from pathlib import Path
 
 # absolute path for static data files
 with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/KeySig.yml', 'r') as file: 
@@ -13,6 +14,10 @@ with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/st
 
 with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/PosDataStrFrt.yml', 'r') as file:
     posStrFrt_file = yaml.safe_load(file)
+
+posStrAnimation_path = Path('staticData/PosDataAnimation.yml')
+with open('c:/Users/cocon/GitHub/Prosthetic_Guitar_Simulator/position_mapping/staticData/PosDataAnimation.yml', 'r') as file:
+    posStrAnimation_file = yaml.safe_load(file)
 
 @dataclass
 class Note: 
@@ -56,6 +61,17 @@ class Note:
             self.guitarFret = self.guitarFret + self.noteAccidental
             self.posX, self.posY = posPhys_file['String'][self.guitarString]['Fret'][self.guitarFret]
 
+
+    def findAnimation(self):
+        try:
+            self.animation = posStrAnimation_file['String'][self.guitarString]['Fret'][self.guitarFret][0]
+        except KeyError as ke:
+            print(f"Key error: {ke}. Check if the correct guitarString and guitarFret are being used.")
+            self.animation = "default"
+        except Exception as e:
+            self.animation = "default"
+            print(f"Could not pull position from yaml file: {e}")
+
             
     def printNoteAttribs(self): 
         """Prints attributes of each note"""
@@ -83,6 +99,7 @@ class Song:
         self.timeSig = timeSig
         self.divisions = divisions
         
+        self.Transpose()
         self.keyTransform()
         if notes is not None: 
             for note in notes:
@@ -102,7 +119,12 @@ class Song:
                     note.noteAccidental = note.noteAccidental + newAccidental
                     # find new finger position 
                     note.findPos() 
-
+    
+    def Transpose(self):
+        """Function to transpose sheet music to guitar correctly"""
+        if self.notes is not None: # Check if note exists
+            for note in self.notes:
+                note.noteNumber = note.noteNumber - 1
 
     def printAttribs(self): 
         """Function to print attributes of song to console for testing and debugging"""
