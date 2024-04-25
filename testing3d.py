@@ -3,12 +3,15 @@ position mapping module
 """
 
 from position_mapping import XMLInterpret, musicClasses
+from CadenCV import sheetMusicInterpret
 from ursina.prefabs.file_browser import FileBrowser
 from ursina.prefabs.dropdown_menu import DropdownMenu, DropdownMenuButton
 from ursina import *
 from ursina.shaders import *
 import sys
 import time
+
+
 
 class dotModel(Entity): 
     def update(self):
@@ -19,7 +22,6 @@ def playSong(song: musicClasses.Song, counter: int):
     note = song.notes[counter]
 
     b = False
-        
 
 space = Ursina()
 
@@ -72,6 +74,3 @@ def input(key):
 playButton = Button(text='Play', model='circle', scale=0.15, origin=(-4.5,-2,0))
 playButton.on_click = demo
 space.run()
-
-
-
