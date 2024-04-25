@@ -1,0 +1,120 @@
+0: # C Major
+  A: 0
+  B: 0
+  C: 0
+  D: 0
+  E: 0
+  F: 0
+  G: 0
+1: # G Major
+  A: 0
+  B: 0
+  C: 0
+  D: 0
+  E: 0
+  F: 1
+  G: 0
+2: # D Major 
+  A: 0
+  B: 0
+  C: 1
+  D: 0
+  E: 0
+  F: 1
+  G: 0
+3: # AMajor
+  A: 0
+  B: 0 
+  C: 1
+  D: 0
+  E: 0
+  F: 1
+  G: 1
+4: # E Major
+  A: 0
+  B: 0
+  C: 1
+  D: 1
+  E: 0
+  F: 1
+  G: 1
+5: # B Major
+  A: 1
+  B: 0
+  C: 1
+  D: 1
+  E: 0
+  F: 1
+  G: 1
+6: # F Sharp Major
+  A: 1
+  B: 0
+  C: 1
+  D: 1
+  E: 1
+  F: 1
+  G: 1
+7: # C Sharp Major 
+  A: 1
+  B: 1
+  C: 1
+  D: 1
+  E: 1
+  F: 1
+  G: 1
+-1: # F Major 
+  A: 0
+  B: -1
+  C: 0
+  D: 0
+  E: 0
+  F: 0
+  G: 0
+-2: # B Flat Major
+  A: 0
+  B: -1
+  C: 0 
+  D: 0
+  E: -1
+  F: 0
+  G: 0
+-3: # E Flat Major
+  A: -1
+  B: -1 
+  C: 0 
+  D: 0
+  E: -1
+  F: 0
+  G: 0
+-4: # A Flat Major
+  A: -1
+  B: -1
+  C: 0
+  D: -1
+  E: -1
+  F: 0
+  G: 0
+-5: # D Flat Major
+  A: -1
+  B: -1 
+  C: 0
+  D: -1
+  E: -1
+  F: 0
+  G: -1
+-6: # G Flat Major
+  A: -1 
+  B: -1
+  C: -1
+  D: -1
+  E: -1
+  F: 0
+  G: -1
+-7: # C Flat Major
+  A: -1
+  B: -1
+  C: -1
+  D: -1
+  E: -1
+  F: -1
+  G: -1
