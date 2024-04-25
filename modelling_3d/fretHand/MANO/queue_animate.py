@@ -9,10 +9,19 @@ from time import time
 from pathlib import Path
 import json
 import logging
+from musicClassesLinux import Note, Song
+import XMLInterpret
+from guitar_sound import GuitarSimulator
 
-# Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+xml_path = Path('/home/zappizap/Projects/Prosthetic_Guitar_Simulator/musicXML_Files/Teapot.xml')
+guitar_song = XMLInterpret.XMLInterpret(str(xml_path))
 
+# Set up basic configuration for logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Optionally, configure specific loggers if you know which module to target
+logger = logging.getLogger('ursina')  # For example, targeting all loggers under 'ursina'
+logger.setLevel(logging.INFO)
 
 model_path = Path('../mano_v1_2/models')
 guitar_path = Path('Guitar2.obj')
@@ -29,6 +38,7 @@ class CustomModel(Entity):
         self.model = None  # This will be set up later
         self.vertices = None  # Initialize vertices
         self.model = None  # This will be set up later
+        # self.guitar_simulator = GuitarSimulator()
 
         # Init hand variables
         self.pose = None
@@ -47,7 +57,14 @@ class CustomModel(Entity):
         self.animation_time = 0
         self.animation_duration = 2
         self.ready = True
-        self.animation_queue = ["Middlef2s1", "default", "Middlef2s2", "Indexf1s3", ] 
+        self.animation_queue = []
+
+        # music
+        self.music_queue = []
+        self.sound_duration = []
+        self.current_audio = None
+        self.audio_start_time = None
+        self.audio_clips = []
 
     def setup_initial_model(self, vertices, faces):
         self.vertices = vertices
@@ -73,18 +90,51 @@ class CustomModel(Entity):
             result = self.load_position(path)
             if result:
                 self.next_vertices, self.next_faces, self.next_pose, self.next_betas, self.next_global_orient, self.next_transl = result
+                
             else:
                 logging.error(f"No position data found for path: {path}")
         except Exception as e:
             logging.error(f"Failed to load next pose due to: {e}")
 
+    def preload_audio(self):
+        """Preloads audio files into the dictionary."""
+        if self.music_queue:
+            for path in self.music_queue:
+                full_path = f"sound/{path}.mp3"
+                self.audio_clips.append(Audio(full_path, loop=False, autoplay=False))
+            logging.info("done preloading")
+
+    def play_audio(self, audio, duration):
+        if self.current_audio:
+            self.current_audio.stop()  # Stop any currently playing audio
+        self.current_audio = audio
+        if self.current_audio:
+            self.current_audio.play()
+            logging.info(f"Playing audio {self.current_audio} for duration: {duration}")
+            self.audio_start_time = time.time()
+            self.audio_duration = duration
+
     def update(self):
-        if self.ready and self.animation_queue:
+        # Manage audio playback duration
+        if self.current_audio and self.audio_start_time:
+            self.ready = False
+            if time.time() - self.audio_start_time > self.audio_duration:
+                self.current_audio.stop()
+                self.current_audio = None  # Reset the current audio
+                # Move to next animation only after audio has stopped
+                if self.animation_queue and not self.ready:
+                    next_pose = self.animation_queue.pop(0)
+                    self.set_next_pose(next_pose)
+                    self.ready = False
+
+        # Manage animations
+        if self.ready and self.animation_queue and not self.current_audio:
             next_pose = self.animation_queue.pop(0)
             self.set_next_pose(next_pose)
             self.ready = False
 
-        if self.next_pose != None and not self.ready:
+        # Update model if there is a new pose to transition to
+        if self.next_pose is not None and not self.ready:
             if self.animation_time < self.animation_duration:
                 t = self.animation_time / self.animation_duration
                 interpolated_pose = (1 - t) * self.pose + t * self.next_pose
@@ -94,9 +144,14 @@ class CustomModel(Entity):
             else:
                 self.pose = self.next_pose
                 self.animation_time = 0
+                
+                logging.info("Animation completed, model is ready for next pose.")
+                # Play audio after animation ends
+                if self.audio_clips and self.sound_duration:
+                    duration = self.sound_duration.pop(0)
+                    audio = self.audio_clips.pop(0)
+                    self.play_audio(audio, duration)
                 self.ready = True
-                logging.debug("Animation completed, model is ready for next pose.")
-
 
     def create_model(self, path, n_comps, batch_size, pose, betas, global_orient, transl):
         lh_model = mano.load(model_path=str(path),
@@ -155,16 +210,20 @@ class CustomModel(Entity):
             betas = torch.zeros((batch_size, 10))
             global_orient = torch.zeros((batch_size, 3))
             transl = torch.zeros((batch_size, 3))
-            vertices, faces = create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
+            vertices, faces = self.create_model(model_path, n_comps, batch_size, pose, betas, global_orient, transl)
             return vertices, faces, pose, betas, global_orient, transl,
 
 
 
 from ursina import *
 
+
+
 def setup():
     app = Ursina(borderless=False, fullscreen=True)
     camera.position = (1, 11, -20)
+
+    
 
     # Setting up Guitar
     guitar_model = load_model(str(guitar_path))
@@ -180,9 +239,19 @@ def setup():
     custom_model.betas = betas
     custom_model.global_orient = global_orient
     custom_model.transl = transl
+    guitar_song.printAttribs()
+
+ 
+
+    for note in guitar_song.notes:
+        custom_model.animation_queue.append(note.animation)
+        custom_model.music_queue.append(note.sound)
+        custom_model.sound_duration.append(note.noteLengthTime)
+   
+    custom_model.preload_audio()
     custom_model.setup_initial_model(vertices, faces)
     custom_model.scale = Vec3(22, 22, 22)
-
+    
     
     EditorCamera()
     app.update = custom_model.update
