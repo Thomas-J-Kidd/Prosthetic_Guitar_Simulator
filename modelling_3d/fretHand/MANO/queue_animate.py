@@ -13,8 +13,6 @@ from musicClassesLinux import Note, Song
 import XMLInterpret
 from guitar_sound import GuitarSimulator
 
-xml_path = Path('/home/zappizap/Projects/Prosthetic_Guitar_Simulator/musicXML_Files/Teapot.xml')
-guitar_song = XMLInterpret.XMLInterpret(str(xml_path))
 
 # Set up basic configuration for logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -23,10 +21,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger('ursina')  # For example, targeting all loggers under 'ursina'
 logger.setLevel(logging.INFO)
 
-model_path = Path('../mano_v1_2/models')
-guitar_path = Path('Guitar2.obj')
-n_comps = 45
-batch_size = 1
+
 
 class CustomModel(Entity):
     def __init__(self, model_path, n_comps, batch_size, **kwargs):
@@ -150,7 +145,7 @@ class CustomModel(Entity):
                 if self.audio_clips and self.sound_duration:
                     duration = self.sound_duration.pop(0)
                     audio = self.audio_clips.pop(0)
-                    self.play_audio(audio, duration)
+                    #self.play_audio(audio, duration)
                 self.ready = True
 
     def create_model(self, path, n_comps, batch_size, pose, betas, global_orient, transl):
@@ -218,6 +213,14 @@ class CustomModel(Entity):
 from ursina import *
 
 
+#xml_path = Path('/home/zappizap/Projects/Prosthetic_Guitar_Simulator/musicXML_Files/Teapot.xml')
+xml_path = Path('../../../CadenCV/output/XML/teapot.xml')
+guitar_song = XMLInterpret.XMLInterpret(str(xml_path))
+
+model_path = Path('../mano_v1_2/models')
+guitar_path = Path('Guitar2.obj')
+n_comps = 45
+batch_size = 1
 
 def setup():
     app = Ursina(borderless=False, fullscreen=True)

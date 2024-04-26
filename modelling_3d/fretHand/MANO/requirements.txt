@@ -34,3 +34,6 @@ ursina==6.1.2
 wheel==0.43.0
 PyYAML
 pydub
+pyfluidsynth
+
+

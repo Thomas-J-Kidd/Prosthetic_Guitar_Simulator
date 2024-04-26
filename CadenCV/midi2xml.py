@@ -1,5 +1,6 @@
 import os
 from music21 import converter
+from pathlib import Path
 
 def midi_to_musicxml(midi_file_path, musicxml_file_path):
     """
@@ -40,4 +41,6 @@ def convert_all_midis_in_folder(input_directory, output_directory):
             print(f"Converted {midi_file_path} to {musicxml_file_path}")
 
 # Example usage
-convert_all_midis_in_folder(r'C:\Users\Arche\OneDrive\Desktop\cadenCV-master\output', r'C:\Users\Arche\OneDrive\Desktop\cadenCV-master\output\XML')
+input_midi = Path('output')
+output_xml = Path('output/XML')
+convert_all_midis_in_folder(str(input_midi), str(output_xml))

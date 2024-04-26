@@ -3,6 +3,8 @@ modelling_3d/fretHand/mano_v1_2/models/models.zip
 modelling_3d/fretHand/mano_v1_2/webuser/
 modelling_3d/fretHand/MANO/env
 modelling_3d/fretHand/MANO/venv
+modelling_3d/fretHand/MANO/__pycache__
 modelling_3d/fretHand/MANO/models_compressed
 modelling_3d/fretHand/MANO/mano/__pycache__/
 position_mapping/__pycache__/
+CadenCV/__pycache__/
