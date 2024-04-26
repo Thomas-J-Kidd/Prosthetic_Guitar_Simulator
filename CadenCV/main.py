@@ -19,6 +19,7 @@ __status__ = "Prototype"
 # Import Statements
 #-------------------------------------------------------------------------------
 
+import os
 import sys
 import cv2
 import numpy as np
@@ -645,7 +646,9 @@ def merge_boxes(boxes, threshold):
 
 
 if __name__ == "__main__":
-
+    if len(sys.argv) < 2:
+        print("Usage: python script.py <input_path>")
+        sys.exit(1)
     #-------------------------------------------------------------------------------
     # Image Preprocessing (Blurring, Noise Removal, Binarization, Deskewing)
     #-------------------------------------------------------------------------------
@@ -1206,6 +1209,8 @@ if __name__ == "__main__":
     # Sequence MIDI
     # -------------------------------------------------------------------------------
 
+    base_name = os.path.splitext(os.path.basename(img_file))[0]  # Extract the base filename without extension
+    output_file_path = os.path.join("output", f"{base_name}.mid")
     print("[INFO] Sequencing MIDI")
     midi = MIDIFile(1)
     track = 0
@@ -1234,17 +1239,11 @@ if __name__ == "__main__":
                 time += duration
 
     # ------- Write to disk -------
-    print("[INFO] Writing MIDI to disk")
-    binfile = open("output/output.mid", 'wb')
-    midi.writeFile(binfile)
-    binfile.close()
 
-
-
-
-
-
-
-
-
-
+    print("[INFO] Writing MIDI to disk at:", output_file_path)
+    with open(output_file_path, 'wb') as binfile:
+        midi.writeFile(binfile)
+    #print("[INFO] Writing MIDI to disk")
+    #binfile = open("output/output.mid", 'wb')
+    #midi.writeFile(binfile)
+        binfile.close()
