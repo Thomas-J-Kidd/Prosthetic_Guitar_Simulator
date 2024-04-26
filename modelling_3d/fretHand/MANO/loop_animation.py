@@ -244,15 +244,20 @@ def setup():
     custom_model.transl = transl
     guitar_song.printAttribs()
 
+    #playButton = Button(text='Starting', model='circle', scale=0.15, origin=(-4.5,-2,0))
+    # playButton.enabled=True
+
     i = 0
-    while i < 120:
+    while i < 5:
+        # time.sleep(1)
+        # playButton.enabled=False
         for note in guitar_song.notes:
             custom_model.animation_queue.append(note.animation)
             custom_model.music_queue.append(note.sound)
             custom_model.sound_duration.append(note.noteLengthTime)
         i = i + 1
         print(i)
-        time.sleep(1)
+        # time.sleep(1)
 
 
     custom_model.preload_audio()
